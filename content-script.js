@@ -23,6 +23,16 @@ var offPeakDataAvailablePerDay = Number((offPeakRemaining / noOfComingDays).toFi
 var avgPeakUsage = Number((peakUsed / dayOfTheMonth).toFixed(2));
 var avgOffPeakUsage = Number((offPeakUsed / dayOfTheMonth).toFixed(2));
 
+var peakDataExceeded = Number((peakRemaining / avgPeakUsage).toFixed(0));
+if (peakDataExceeded > daysInThisMonth) {
+  peakDataExceeded = daysInThisMonth;
+} 
+
+var offPeakDataExceeded = Number((offPeakRemaining / avgOffPeakUsage).toFixed(0));
+if (offPeakDataExceeded > daysInThisMonth) {
+  offPeakDataExceeded = daysInThisMonth;
+} 
+
 //console.log(totalMonthlylimit);
 //console.log(totalRemaining);
 //console.log(totalUsed);
@@ -142,6 +152,11 @@ function injectID() {
 	tr2_td3.style.padding = "2px 50px 2px 10px"; 
 	tr2.appendChild(tr2_td3);
 	tr2_td3.append("");
+	
+	let tr2_td3_span = document.createElement("span");
+	tr2_td3_span.className = "text-muted";
+	tr2_td3.appendChild(tr2_td3_span);
+	tr2_td3_span.append("(For the upcoming "+noOfComingDays+" days)");
 	// ------------------------------------------------------
 	table.append("\n");
 
@@ -163,6 +178,11 @@ function injectID() {
 	tr3_td3.style.padding = "2px 50px 2px 10px"; 
 	tr3.appendChild(tr3_td3);
 	tr3_td3.append("");
+	
+	let tr3_td3_span = document.createElement("span");
+	tr3_td3_span.className = "text-muted";
+	tr3_td3.appendChild(tr3_td3_span);
+	tr3_td3_span.append("(Used in "+dayOfTheMonth+" days)");
 	// ------------------------------------------------------
 	table.append("\n");
 	
@@ -274,6 +294,27 @@ function injectID() {
 	table.append("\n");
 	
 	
+	// TR 06 01
+	let tr601 = document.createElement("tr");
+	table.appendChild(tr601);
+	// ------------------------------------------------------
+	let tr601_td1 = document.createElement("td");
+	tr601_td1.style.padding = "2px 50px 2px 10px"; 
+	tr601.appendChild(tr601_td1);
+	tr601_td1.append("Peak data will be exceeded in ");
+	// ------------------------------------------------------
+	let tr601_td2 = document.createElement("td");
+	tr601.appendChild(tr601_td2);
+	tr601_td2.append(peakDataExceeded + " days");
+	// ------------------------------------------------------
+	let tr601_td3 = document.createElement("td");
+	tr601_td3.style.padding = "2px 50px 2px 10px"; 
+	tr601.appendChild(tr601_td3);
+	tr601_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+	
+	
 	// TR BR 01
 	let trbr02 = document.createElement("tr");
 	table.appendChild(trbr02);
@@ -378,6 +419,26 @@ function injectID() {
 	tr9_td3.style.padding = "2px 50px 2px 10px"; 
 	tr9.appendChild(tr9_td3);
 	tr9_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+	
+	// TR 09 01
+	let tr901 = document.createElement("tr");
+	table.appendChild(tr901);
+	// ------------------------------------------------------
+	let tr901_td1 = document.createElement("td");
+	tr901_td1.style.padding = "2px 50px 2px 10px"; 
+	tr901.appendChild(tr901_td1);
+	tr901_td1.append("Off Peak data will be exceeded in ");
+	// ------------------------------------------------------
+	let tr901_td2 = document.createElement("td");
+	tr901.appendChild(tr901_td2);
+	tr901_td2.append(offPeakDataExceeded + " days");
+	// ------------------------------------------------------
+	let tr901_td3 = document.createElement("td");
+	tr901_td3.style.padding = "2px 50px 2px 10px"; 
+	tr901.appendChild(tr901_td3);
+	tr901_td3.append("");
 	// ------------------------------------------------------
 	table.append("\n");
 	
