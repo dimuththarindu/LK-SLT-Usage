@@ -10,11 +10,9 @@ var offPeakMonthlylimit = Number((totalMonthlylimit - peakMonthlylimit).toFixed(
 var offPeakUsed = Number((totalUsed - peakUsed).toFixed(2)); // 16.7-09.4 = 07.3GB
 var offPeakRemaining = Number((offPeakMonthlylimit - offPeakUsed).toFixed(2)); // 54-07.3 = 46.7GB
 
-
 var daysInThisMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate(); // 31
 var dayOfTheMonth = new Date().getDate(); // 11
 var noOfComingDays = daysInThisMonth - dayOfTheMonth; // 31-11 = 20
-
 
 var peakDataPerDay = Number((peakMonthlylimit / daysInThisMonth).toFixed(2));
 var peakDataAvailablePerDay = Number((peakRemaining / (daysInThisMonth - dayOfTheMonth)).toFixed(2));
@@ -45,66 +43,590 @@ var avgOffPeakUsage = Number((offPeakUsed / dayOfTheMonth).toFixed(2));
 //console.log(offPeakDataAvailablePerDay);
 //console.log(avgOffPeakUsage);
 
-var strHTML = "";
-strHTML += "<hr>";
-strHTML += "<h4 style='padding: 10px 10px 5px 10px;'>Monthly Data Usage Statistics</h4>";
 
-strHTML += "<table>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Total Monthly Limit</td> <td>" + totalMonthlylimit + " GB</td><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Total Remaining</td> <td>" + totalRemaining + " GB</td><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Total Used</td> <td>" + totalUsed + " GB</td><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td> <td>&nbsp;</td> <td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-//strHTML += "</table>";
-//strHTML += "<br>";
-
-//strHTML += "<table>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Total Peak Data Monthly Limit</td> <td>" + peakMonthlylimit + " GB</td><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Total Peak Data Remaining</td> <td>" + peakRemaining + " GB</td><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Total Peak Data Used</td> <td>" + peakUsed + " GB</td><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td> <td>&nbsp;</td><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-//strHTML += "</table>";
-//strHTML += "<br>";
-
-//strHTML += "<table>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Total Off Peak Monthly Limit</td> <td>" + offPeakMonthlylimit + " GB</td><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Total Off Peak Remaining</td> <td>" + offPeakRemaining + " GB</td><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Total Off Peak Used</td> <td>" + offPeakUsed + " GB</td><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td> <td>&nbsp;</td><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-//strHTML += "</table>";
-//strHTML += "<br>";
-
-//strHTML += "<table>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Allocated Peak Data Per Day</td> <td>" + peakDataPerDay + " GB</td><td style='padding: 0px 10px 0px 10px;'><span class='text-muted'>&nbsp;&nbsp;&nbsp;(Total Peak Data/"+daysInThisMonth+")</span></td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Available Peak Data Per Day</td> <td>" + peakDataAvailablePerDay + " GB</td><td style='padding: 0px 10px 0px 10px;'><span class='text-muted'>&nbsp;&nbsp;&nbsp;(Available Peak Data/"+(daysInThisMonth - dayOfTheMonth)+")</span></td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Average Peak Data Usage</td> <td>" + avgPeakUsage + " GB</td><td style='padding: 0px 10px 0px 10px;'><span class='text-muted'>&nbsp;&nbsp;&nbsp;(Total Peak Used Data/"+dayOfTheMonth+")</span></td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td> <td>&nbsp;</td><td style='padding: 0px 10px 0px 10px;'>&nbsp;</td></tr>";
-//strHTML += "</table>";
-//strHTML += "<br>";
-
-//strHTML += "<table>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Allocated Off Peak Data Per Day</td> <td>" + offPeakDataPerDay + " GB</td><td style='padding: 0px 10px 0px 10px;'><span class='text-muted'>&nbsp;&nbsp;&nbsp;(Total Off Peak Used Data/"+daysInThisMonth+")</span></td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Available Off Peak Data Per Day</td> <td>" + offPeakDataAvailablePerDay + " GB</td><td style='padding: 0px 10px 0px 10px;'><span class='text-muted'>&nbsp;&nbsp;&nbsp;(Available Off Peak Data/"+(daysInThisMonth - dayOfTheMonth)+")</span></td></tr>";
-strHTML += "<tr><td style='padding: 0px 10px 0px 10px;'>Average Off Peak Data Usage</td> <td>" + avgOffPeakUsage + " GB</td><td style='padding: 0px 10px 0px 10px;'><span class='text-muted'>&nbsp;&nbsp;&nbsp;(Total Off Peak Used Data/"+dayOfTheMonth+")</span></td></tr>";
-strHTML += "</table>";
-strHTML += "<hr>";
-
-injectID(strHTML);
+injectID();
 customStyle01();
 customStyle02();
 customStyle03();
 customStyle04();
 customStyle05();
 
-function injectID(strHTML) {
+function injectID() {
 
 	var path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[4]';
 	var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 	element.id = 'injectIDName';
+	
+	// INNER HTML
+	var docFragment = document.createDocumentFragment(); // contains all gathered nodes
+	
+	let maindiv = document.createElement("div");
+	maindiv.className = "col-md-12";
+	docFragment.appendChild(maindiv);
+	docFragment.append("\n");
+	
+	let hr1 = document.createElement("hr");
+	maindiv.appendChild(hr1);
+	maindiv.append("\n");
 
-	var para = document.createElement("div");
-	para.className = "col-md-12";
-	para.innerHTML = strHTML;
-	document.getElementById("injectIDName").appendChild(para);
+	let h4 = document.createElement("h4");
+	h4.style.padding = "10px 10px 5px 10px"; 
+	maindiv.appendChild(h4);
+	h4.append("Monthly Data Usage Statistics");
+	maindiv.append("\n");
+
+	let table = document.createElement("table");
+	//table.className = "table table-hover";
+	maindiv.appendChild(table);
+	table.append("\n");
+	
+	// TR Head 01
+	let trhead1 = document.createElement("tr");
+	table.appendChild(trhead1);
+	// ------------------------------------------------------
+	let trhead1_td1 = document.createElement("td");
+	trhead1_td1.style.padding = "2px 50px 2px 10px"; 
+	trhead1.appendChild(trhead1_td1);	
+	let trhead1_td1_strong = document.createElement("strong");
+	trhead1_td1.appendChild(trhead1_td1_strong);
+	trhead1_td1_strong.append("Total Volume");
+	
+	// ------------------------------------------------------
+	let trhead1_td2 = document.createElement("td");
+	trhead1.appendChild(trhead1_td2);
+	trhead1_td2.append("");
+	// ------------------------------------------------------
+	let trhead1_td3 = document.createElement("td");
+	trhead1_td3.style.padding = "2px 50px 2px 10px"; 
+	trhead1.appendChild(trhead1_td3);
+	trhead1_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+	
+
+	// TR 01
+	let tr1 = document.createElement("tr");
+	table.appendChild(tr1);
+	// ------------------------------------------------------
+	let tr1_td1 = document.createElement("td");
+	tr1_td1.style.padding = "2px 50px 2px 10px"; 
+	tr1.appendChild(tr1_td1);
+	tr1_td1.append("Total Monthly Limit");
+	// ------------------------------------------------------
+	let tr1_td2 = document.createElement("td");
+	tr1.appendChild(tr1_td2);
+	tr1_td2.append(totalMonthlylimit + " GB");
+	// ------------------------------------------------------
+	let tr1_td3 = document.createElement("td");
+	tr1_td3.style.padding = "2px 50px 2px 10px"; 
+	tr1.appendChild(tr1_td3);
+	tr1_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 02
+	let tr2 = document.createElement("tr");
+	table.appendChild(tr2);
+	// ------------------------------------------------------
+	let tr2_td1 = document.createElement("td");
+	tr2_td1.style.padding = "2px 50px 2px 10px"; 
+	tr2.appendChild(tr2_td1);
+	tr2_td1.append("Total Remaining");
+	// ------------------------------------------------------
+	let tr2_td2 = document.createElement("td");
+	tr2.appendChild(tr2_td2);
+	tr2_td2.append(totalRemaining + " GB");
+	// ------------------------------------------------------
+	let tr2_td3 = document.createElement("td");
+	tr2_td3.style.padding = "2px 50px 2px 10px"; 
+	tr2.appendChild(tr2_td3);
+	tr2_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 03
+	let tr3 = document.createElement("tr");
+	table.appendChild(tr3);
+	// ------------------------------------------------------
+	let tr3_td1 = document.createElement("td");
+	tr3_td1.style.padding = "2px 50px 2px 10px"; 
+	tr3.appendChild(tr3_td1);
+	tr3_td1.append("Total Used");
+	// ------------------------------------------------------
+	let tr3_td2 = document.createElement("td");
+	tr3.appendChild(tr3_td2);
+	tr3_td2.append(totalUsed + " GB");
+	// ------------------------------------------------------
+	let tr3_td3 = document.createElement("td");
+	tr3_td3.style.padding = "2px 50px 2px 10px"; 
+	tr3.appendChild(tr3_td3);
+	tr3_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+	
+	
+	// TR BR 01
+	let trbr01 = document.createElement("tr");
+	table.appendChild(trbr01);
+	// ------------------------------------------------------
+	let trbr01_td1 = document.createElement("td");
+	trbr01_td1.style.padding = "2px 50px 2px 10px"; 
+	trbr01.appendChild(trbr01_td1);
+	trbr01_td1.append(" ");
+	// ------------------------------------------------------
+	let trbr01_td2 = document.createElement("td");
+	trbr01.appendChild(trbr01_td2);
+	trbr01_td2.append(" ");
+	// ------------------------------------------------------
+	let trbr01_td3 = document.createElement("td");
+	trbr01_td3.style.padding = "2px 50px 2px 10px"; 
+	trbr01.appendChild(trbr01_td3);
+	trbr01_td3.append(" ");
+	// ------------------------------------------------------
+	table.append("\n");
+	
+	// TR Head 02
+	let trhead2 = document.createElement("tr");
+	table.appendChild(trhead2);
+	// ------------------------------------------------------
+	let trhead2_td1 = document.createElement("td");
+	trhead2_td1.style.padding = "2px 50px 2px 10px"; 
+	trhead2.appendChild(trhead2_td1);	
+	let trhead2_td1_strong = document.createElement("strong");
+	trhead2_td1.appendChild(trhead2_td1_strong);
+	trhead2_td1_strong.append("Total Peak Volume");
+	
+	// ------------------------------------------------------
+	let trhead2_td2 = document.createElement("td");
+	trhead2.appendChild(trhead2_td2);
+	trhead2_td2.append("");
+	// ------------------------------------------------------
+	let trhead2_td3 = document.createElement("td");
+	trhead2_td3.style.padding = "2px 50px 2px 10px"; 
+	trhead2.appendChild(trhead2_td3);
+	trhead2_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 04
+	let tr4 = document.createElement("tr");
+	table.appendChild(tr4);
+	// ------------------------------------------------------
+	let tr4_td1 = document.createElement("td");
+	tr4_td1.style.padding = "2px 50px 2px 10px"; 
+	tr4.appendChild(tr4_td1);
+	tr4_td1.append("Total Peak Data Monthly Limit");
+	// ------------------------------------------------------
+	let tr4_td2 = document.createElement("td");
+	tr4.appendChild(tr4_td2);
+	tr4_td2.append(peakMonthlylimit + " GB");
+	// ------------------------------------------------------
+	let tr4_td3 = document.createElement("td");
+	tr4_td3.style.padding = "2px 50px 2px 10px"; 
+	tr4.appendChild(tr4_td3);
+	tr4_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 05
+	let tr5 = document.createElement("tr");
+	table.appendChild(tr5);
+	// ------------------------------------------------------
+	let tr5_td1 = document.createElement("td");
+	tr5_td1.style.padding = "2px 50px 2px 10px"; 
+	tr5.appendChild(tr5_td1);
+	tr5_td1.append("Total Peak Data Remaining");
+	// ------------------------------------------------------
+	let tr5_td2 = document.createElement("td");
+	tr5.appendChild(tr5_td2);
+	tr5_td2.append(peakRemaining + " GB");
+	// ------------------------------------------------------
+	let tr5_td3 = document.createElement("td");
+	tr5_td3.style.padding = "2px 50px 2px 10px"; 
+	tr5.appendChild(tr5_td3);
+	tr5_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 06
+	let tr6 = document.createElement("tr");
+	table.appendChild(tr6);
+	// ------------------------------------------------------
+	let tr6_td1 = document.createElement("td");
+	tr6_td1.style.padding = "2px 50px 2px 10px"; 
+	tr6.appendChild(tr6_td1);
+	tr6_td1.append("Total Peak Data Used");
+	// ------------------------------------------------------
+	let tr6_td2 = document.createElement("td");
+	tr6.appendChild(tr6_td2);
+	tr6_td2.append(peakUsed + " GB");
+	// ------------------------------------------------------
+	let tr6_td3 = document.createElement("td");
+	tr6_td3.style.padding = "2px 50px 2px 10px"; 
+	tr6.appendChild(tr6_td3);
+	tr6_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+	
+	
+	// TR BR 01
+	let trbr02 = document.createElement("tr");
+	table.appendChild(trbr02);
+	// ------------------------------------------------------
+	let trbr02_td1 = document.createElement("td");
+	trbr02_td1.style.padding = "2px 50px 2px 10px"; 
+	trbr02.appendChild(trbr02_td1);
+	trbr02_td1.append(" ");
+	// ------------------------------------------------------
+	let trbr02_td2 = document.createElement("td");
+	trbr02.appendChild(trbr02_td2);
+	trbr02_td2.append(" ");
+	// ------------------------------------------------------
+	let trbr02_td3 = document.createElement("td");
+	trbr02_td3.style.padding = "2px 50px 2px 10px"; 
+	trbr02.appendChild(trbr02_td3);
+	trbr02_td3.append(" ");
+	// ------------------------------------------------------
+	table.append("\n");
+	
+	
+	// TR Head 01
+	let trhead3 = document.createElement("tr");
+	table.appendChild(trhead3);
+	// ------------------------------------------------------
+	let trhead3_td1 = document.createElement("td");
+	trhead3_td1.style.padding = "2px 50px 2px 10px"; 
+	trhead3.appendChild(trhead3_td1);	
+	let trhead3_td1_strong = document.createElement("strong");
+	trhead3_td1.appendChild(trhead3_td1_strong);
+	trhead3_td1_strong.append("Total Off Peak Volume");
+	
+	// ------------------------------------------------------
+	let trhead3_td2 = document.createElement("td");
+	trhead3.appendChild(trhead3_td2);
+	trhead3_td2.append("");
+	// ------------------------------------------------------
+	let trhead3_td3 = document.createElement("td");
+	trhead3_td3.style.padding = "2px 50px 2px 10px"; 
+	trhead3.appendChild(trhead3_td3);
+	trhead3_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 07
+	let tr7 = document.createElement("tr");
+	table.appendChild(tr7);
+	// ------------------------------------------------------
+	let tr7_td1 = document.createElement("td");
+	tr7_td1.style.padding = "2px 50px 2px 10px"; 
+	tr7.appendChild(tr7_td1);
+	tr7_td1.append("Total Off Peak Monthly Limit");
+	// ------------------------------------------------------
+	let tr7_td2 = document.createElement("td");
+	tr7.appendChild(tr7_td2);
+	tr7_td2.append(offPeakMonthlylimit + " GB");
+	// ------------------------------------------------------
+	let tr7_td3 = document.createElement("td");
+	tr7_td3.style.padding = "2px 50px 2px 10px"; 
+	tr7.appendChild(tr7_td3);
+	tr7_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 08
+	let tr8 = document.createElement("tr");
+	table.appendChild(tr8);
+	// ------------------------------------------------------
+	let tr8_td1 = document.createElement("td");
+	tr8_td1.style.padding = "2px 50px 2px 10px"; 
+	tr8.appendChild(tr8_td1);
+	tr8_td1.append("Total Off Peak Remaining");
+	// ------------------------------------------------------
+	let tr8_td2 = document.createElement("td");
+	tr8.appendChild(tr8_td2);
+	tr8_td2.append(offPeakRemaining + " GB");
+	// ------------------------------------------------------
+	let tr8_td3 = document.createElement("td");
+	tr8_td3.style.padding = "2px 50px 2px 10px"; 
+	tr8.appendChild(tr8_td3);
+	tr8_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 09
+	let tr9 = document.createElement("tr");
+	table.appendChild(tr9);
+	// ------------------------------------------------------
+	let tr9_td1 = document.createElement("td");
+	tr9_td1.style.padding = "2px 50px 2px 10px"; 
+	tr9.appendChild(tr9_td1);
+	tr9_td1.append("Total Off Peak Used");
+	// ------------------------------------------------------
+	let tr9_td2 = document.createElement("td");
+	tr9.appendChild(tr9_td2);
+	tr9_td2.append(offPeakUsed + " GB");
+	// ------------------------------------------------------
+	let tr9_td3 = document.createElement("td");
+	tr9_td3.style.padding = "2px 50px 2px 10px"; 
+	tr9.appendChild(tr9_td3);
+	tr9_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+	
+	
+	// TR BR 01
+	let trbr03 = document.createElement("tr");
+	table.appendChild(trbr03);
+	// ------------------------------------------------------
+	let trbr03_td1 = document.createElement("td");
+	trbr03_td1.style.padding = "2px 50px 2px 10px"; 
+	trbr03.appendChild(trbr03_td1);
+	trbr03_td1.append(" ");
+	// ------------------------------------------------------
+	let trbr03_td2 = document.createElement("td");
+	trbr03.appendChild(trbr03_td2);
+	trbr03_td2.append(" ");
+	// ------------------------------------------------------
+	let trbr03_td3 = document.createElement("td");
+	trbr03_td3.style.padding = "2px 50px 2px 10px"; 
+	trbr03.appendChild(trbr03_td3);
+	trbr03_td3.append(" ");
+	// ------------------------------------------------------
+	table.append("\n");
+	
+	
+	// TR Head 04
+	let trhead4 = document.createElement("tr");
+	table.appendChild(trhead4);
+	// ------------------------------------------------------
+	let trhead4_td1 = document.createElement("td");
+	trhead4_td1.style.padding = "2px 50px 2px 10px"; 
+	trhead4.appendChild(trhead4_td1);	
+	let trhead4_td1_strong = document.createElement("strong");
+	trhead4_td1.appendChild(trhead4_td1_strong);
+	trhead4_td1_strong.append("Total Peak Volume: Per day");
+	
+	// ------------------------------------------------------
+	let trhead4_td2 = document.createElement("td");
+	trhead4.appendChild(trhead4_td2);
+	trhead4_td2.append("");
+	// ------------------------------------------------------
+	let trhead4_td3 = document.createElement("td");
+	trhead4_td3.style.padding = "2px 50px 2px 10px"; 
+	trhead4.appendChild(trhead4_td3);
+	trhead4_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 10
+	let tr10 = document.createElement("tr");
+	table.appendChild(tr10);
+	// ------------------------------------------------------
+	let tr10_td1 = document.createElement("td");
+	tr10_td1.style.padding = "2px 50px 2px 10px"; 
+	tr10.appendChild(tr10_td1);
+	tr10_td1.append("Allocated Peak Data Per Day");
+	// ------------------------------------------------------
+	let tr10_td2 = document.createElement("td");
+	tr10.appendChild(tr10_td2);
+	tr10_td2.append(peakDataPerDay + " GB");
+	// ------------------------------------------------------
+	let tr10_td3 = document.createElement("td");
+	tr10_td3.style.padding = "2px 50px 2px 10px"; 
+	tr10.appendChild(tr10_td3);
+
+	let tr10_td3_span = document.createElement("span");
+	tr10_td3_span.className = "text-muted";
+	tr10_td3.appendChild(tr10_td3_span);
+	tr10_td3_span.append("(Total Peak Data/"+daysInThisMonth+")");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 11
+	let tr11 = document.createElement("tr");
+	table.appendChild(tr11);
+	// ------------------------------------------------------
+	let tr11_td1 = document.createElement("td");
+	tr11_td1.style.padding = "2px 50px 2px 10px"; 
+	tr11.appendChild(tr11_td1);
+	tr11_td1.append("Available Peak Data Per Day");
+	// ------------------------------------------------------
+	let tr11_td2 = document.createElement("td");
+	tr11.appendChild(tr11_td2);
+	tr11_td2.append(peakDataAvailablePerDay + " GB");
+	// ------------------------------------------------------
+	let tr11_td3 = document.createElement("td");
+	tr11_td3.style.padding = "2px 50px 2px 10px"; 
+	tr11.appendChild(tr11_td3);
+
+	let tr11_td3_span = document.createElement("span");
+	tr11_td3_span.className = "text-muted";
+	tr11_td3.appendChild(tr11_td3_span);
+	tr11_td3_span.append("(Available Peak Data/"+(daysInThisMonth - dayOfTheMonth)+")");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 12
+	let tr12 = document.createElement("tr");
+	table.appendChild(tr12);
+	// ------------------------------------------------------
+	let tr12_td1 = document.createElement("td");
+	tr12_td1.style.padding = "2px 50px 2px 10px"; 
+	tr12.appendChild(tr12_td1);
+	tr12_td1.append("Average Peak Data Usage");
+	// ------------------------------------------------------
+	let tr12_td2 = document.createElement("td");
+	tr12.appendChild(tr12_td2);
+	tr12_td2.append(avgPeakUsage + " GB");
+	// ------------------------------------------------------
+	let tr12_td3 = document.createElement("td");
+	tr12_td3.style.padding = "2px 50px 2px 10px"; 
+	tr12.appendChild(tr12_td3);
+
+	let tr12_td3_span = document.createElement("span");
+	tr12_td3_span.className = "text-muted";
+	tr12_td3.appendChild(tr12_td3_span);
+	tr12_td3_span.append("(Total Peak Used Data/"+dayOfTheMonth+")");
+	// ------------------------------------------------------
+	table.append("\n");
+	
+	
+	// TR BR 01
+	let trbr04 = document.createElement("tr");
+	table.appendChild(trbr04);
+	// ------------------------------------------------------
+	let trbr04_td1 = document.createElement("td");
+	trbr04_td1.style.padding = "2px 50px 2px 10px"; 
+	trbr04.appendChild(trbr04_td1);
+	trbr04_td1.append(" ");
+	// ------------------------------------------------------
+	let trbr04_td2 = document.createElement("td");
+	trbr04.appendChild(trbr04_td2);
+	trbr04_td2.append(" ");
+	// ------------------------------------------------------
+	let trbr04_td3 = document.createElement("td");
+	trbr04_td3.style.padding = "2px 50px 2px 10px"; 
+	trbr04.appendChild(trbr04_td3);
+	trbr04_td3.append(" ");
+	// ------------------------------------------------------
+	table.append("\n");
+	
+	
+	// TR Head 03
+	let trhead5 = document.createElement("tr");
+	table.appendChild(trhead5);
+	// ------------------------------------------------------
+	let trhead5_td1 = document.createElement("td");
+	trhead5_td1.style.padding = "2px 50px 2px 10px"; 
+	trhead5.appendChild(trhead5_td1);	
+	let trhead5_td1_strong = document.createElement("strong");
+	trhead5_td1.appendChild(trhead5_td1_strong);
+	trhead5_td1_strong.append("Total Off Peak Volume: Per day");
+	
+	// ------------------------------------------------------
+	let trhead5_td2 = document.createElement("td");
+	trhead5.appendChild(trhead5_td2);
+	trhead5_td2.append("");
+	// ------------------------------------------------------
+	let trhead5_td3 = document.createElement("td");
+	trhead5_td3.style.padding = "2px 50px 2px 10px"; 
+	trhead5.appendChild(trhead5_td3);
+	trhead5_td3.append("");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 13
+	let tr13 = document.createElement("tr");
+	table.appendChild(tr13);
+	// ------------------------------------------------------
+	let tr13_td1 = document.createElement("td");
+	tr13_td1.style.padding = "2px 50px 2px 10px"; 
+	tr13.appendChild(tr13_td1);
+	tr13_td1.append("Allocated Off Peak Data Per Day");
+	// ------------------------------------------------------
+	let tr13_td2 = document.createElement("td");
+	tr13.appendChild(tr13_td2);
+	tr13_td2.append(offPeakDataPerDay + " GB");
+	// ------------------------------------------------------
+	let tr13_td3 = document.createElement("td");
+	tr13_td3.style.padding = "2px 50px 2px 10px"; 
+	tr13.appendChild(tr13_td3);
+
+	let tr13_td3_span = document.createElement("span");
+	tr13_td3_span.className = "text-muted";
+	tr13_td3.appendChild(tr13_td3_span);
+	tr13_td3_span.append("(Total Off Peak Used Data/"+daysInThisMonth+")");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 14
+	let tr14 = document.createElement("tr");
+	table.appendChild(tr14);
+	// ------------------------------------------------------
+	let tr14_td1 = document.createElement("td");
+	tr14_td1.style.padding = "2px 50px 2px 10px"; 
+	tr14.appendChild(tr14_td1);
+	tr14_td1.append("Available Off Peak Data Per Day");
+	// ------------------------------------------------------
+	let tr14_td2 = document.createElement("td");
+	tr14.appendChild(tr14_td2);
+	tr14_td2.append(offPeakDataAvailablePerDay + " GB");
+	// ------------------------------------------------------
+	let tr14_td3 = document.createElement("td");
+	tr14_td3.style.padding = "2px 50px 2px 10px"; 
+	tr14.appendChild(tr14_td3);
+
+	let tr14_td3_span = document.createElement("span");
+	tr14_td3_span.className = "text-muted";
+	tr14_td3.appendChild(tr14_td3_span);
+	tr14_td3_span.append("(Available Off Peak Data/"+(daysInThisMonth - dayOfTheMonth)+")");
+	// ------------------------------------------------------
+	table.append("\n");
+
+
+	// TR 15
+	let tr15 = document.createElement("tr");
+	table.appendChild(tr15);
+	// ------------------------------------------------------
+	let tr15_td1 = document.createElement("td");
+	tr15_td1.style.padding = "2px 50px 2px 10px"; 
+	tr15.appendChild(tr15_td1);
+	tr15_td1.append("Average Off Peak Data Usage");
+	// ------------------------------------------------------
+	let tr15_td2 = document.createElement("td");
+	tr15.appendChild(tr15_td2);
+	tr15_td2.append(avgOffPeakUsage + " GB");
+	// ------------------------------------------------------
+	let tr15_td3 = document.createElement("td");
+	tr15_td3.style.padding = "2px 50px 2px 10px"; 
+	tr15.appendChild(tr15_td3);
+
+	let tr15_td3_span = document.createElement("span");
+	tr15_td3_span.className = "text-muted";
+	tr15_td3.appendChild(tr15_td3_span);
+	tr15_td3_span.append("(Total Off Peak Used Data/"+dayOfTheMonth+")");
+	// ------------------------------------------------------
+	table.append("\n");
+
+	let hr2 = document.createElement("hr");
+	maindiv.appendChild(hr2);
+	maindiv.append("\n");	
+	
+	// Insert into original webpage
+	document.getElementById("injectIDName").appendChild(docFragment);
 }
 
 
@@ -160,20 +682,3 @@ function customStyle05() {
 	var element = document.getElementById("div-style-05");
 	element.style.padding = "3px"; 
 }
-
-
-// create a new div element 
-//var newDiv = document.createElement("div"); 
-// and give it some content 
-//var newContent = document.createTextNode("Hi there and greetings!"); 
-// add the text node to the newly created div
-//newDiv.appendChild(newContent);  
-
-// add the newly created element and its content into the DOM 
-//var currentDiv = document.getElementById("myUsagePanel"); 
-//document.body.insertBefore(newDiv, currentDiv); 
-
-//document.body.textContent = "";
-//var header = document.createElement('h1');
-//header.textContent = "This page has been eaten" + peakDataPerDay;
-//document.body.appendChild(header);
