@@ -255,16 +255,16 @@ function injectID() {
     let trbr01_td1 = document.createElement("td");
     trbr01_td1.style.padding = "2px 50px 2px 10px";
     trbr01.appendChild(trbr01_td1);
-    trbr01_td1.append(" ");
+    trbr01_td1.append("   ");
     // ------------------------------------------------------
     let trbr01_td2 = document.createElement("td");
     trbr01.appendChild(trbr01_td2);
-    trbr01_td2.append(" ");
+    trbr01_td2.append("   ");
     // ------------------------------------------------------
     let trbr01_td3 = document.createElement("td");
     trbr01_td3.style.padding = "2px 50px 2px 10px";
     trbr01.appendChild(trbr01_td3);
-    trbr01_td3.append(" ");
+    trbr01_td3.append("   ");
     // ------------------------------------------------------
     table.append("\n");
 
@@ -381,23 +381,23 @@ function injectID() {
     table.append("\n");
 
 
-    // TR BR 01
+    // TR BR 02
     let trbr02 = document.createElement("tr");
     table.appendChild(trbr02);
     // ------------------------------------------------------
     let trbr02_td1 = document.createElement("td");
     trbr02_td1.style.padding = "2px 50px 2px 10px";
     trbr02.appendChild(trbr02_td1);
-    trbr02_td1.append(" ");
+    trbr02_td1.append("   ");
     // ------------------------------------------------------
     let trbr02_td2 = document.createElement("td");
     trbr02.appendChild(trbr02_td2);
-    trbr02_td2.append(" ");
+    trbr02_td2.append("   ");
     // ------------------------------------------------------
     let trbr02_td3 = document.createElement("td");
     trbr02_td3.style.padding = "2px 50px 2px 10px";
     trbr02.appendChild(trbr02_td3);
-    trbr02_td3.append(" ");
+    trbr02_td3.append("   ");
     // ------------------------------------------------------
     table.append("\n");
 
@@ -514,23 +514,23 @@ function injectID() {
     table.append("\n");
 
 
-    // TR BR 01
+    // TR BR 03
     let trbr03 = document.createElement("tr");
     table.appendChild(trbr03);
     // ------------------------------------------------------
     let trbr03_td1 = document.createElement("td");
     trbr03_td1.style.padding = "2px 50px 2px 10px";
     trbr03.appendChild(trbr03_td1);
-    trbr03_td1.append(" ");
+    trbr03_td1.append("   ");
     // ------------------------------------------------------
     let trbr03_td2 = document.createElement("td");
     trbr03.appendChild(trbr03_td2);
-    trbr03_td2.append(" ");
+    trbr03_td2.append("   ");
     // ------------------------------------------------------
     let trbr03_td3 = document.createElement("td");
     trbr03_td3.style.padding = "2px 50px 2px 10px";
     trbr03.appendChild(trbr03_td3);
-    trbr03_td3.append(" ");
+    trbr03_td3.append("   ");
     // ------------------------------------------------------
     table.append("\n");
 
@@ -634,23 +634,23 @@ function injectID() {
     table.append("\n");
 
 
-    // TR BR 01
+    // TR BR 04
     let trbr04 = document.createElement("tr");
     table.appendChild(trbr04);
     // ------------------------------------------------------
     let trbr04_td1 = document.createElement("td");
     trbr04_td1.style.padding = "2px 50px 2px 10px";
     trbr04.appendChild(trbr04_td1);
-    trbr04_td1.append(" ");
+    trbr04_td1.append("   ");
     // ------------------------------------------------------
     let trbr04_td2 = document.createElement("td");
     trbr04.appendChild(trbr04_td2);
-    trbr04_td2.append(" ");
+    trbr04_td2.append("   ");
     // ------------------------------------------------------
     let trbr04_td3 = document.createElement("td");
     trbr04_td3.style.padding = "2px 50px 2px 10px";
     trbr04.appendChild(trbr04_td3);
-    trbr04_td3.append(" ");
+    trbr04_td3.append("   ");
     // ------------------------------------------------------
     table.append("\n");
 
