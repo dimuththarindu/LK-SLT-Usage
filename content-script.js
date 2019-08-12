@@ -76,6 +76,7 @@ customStyle03();
 customStyle04();
 customStyle05();
 
+
 function injectID() {
 
     var path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[4]';
@@ -101,17 +102,20 @@ function injectID() {
     maindiv.append("\n");
 
     let table = document.createElement("table");
-    table.className = "table table-hover table-condensed";
+    table.className = "table-hover";
     maindiv.appendChild(table);
     table.append("\n");
+	
+	let tbody = document.createElement("tbody");
+	table.appendChild(tbody);
 
     // TR Head 01
     let trhead1 = document.createElement("tr");
 	trhead1.className = "info";
-    table.appendChild(trhead1);
+    tbody.appendChild(trhead1);
     // ------------------------------------------------------
     let trhead1_td1 = document.createElement("td");
-    trhead1_td1.style.padding = "2px 50px 2px 10px";
+    trhead1_td1.style.padding = "2px 60px 2px 10px";
     trhead1.appendChild(trhead1_td1);
     let trhead1_td1_strong = document.createElement("strong");
     trhead1_td1.appendChild(trhead1_td1_strong);
@@ -120,22 +124,22 @@ function injectID() {
     // ------------------------------------------------------
     let trhead1_td2 = document.createElement("td");
     trhead1.appendChild(trhead1_td2);
-    trhead1_td2.append("");
+    trhead1_td2.append("   ");
     // ------------------------------------------------------
     let trhead1_td3 = document.createElement("td");
-    trhead1_td3.style.padding = "2px 50px 2px 10px";
+    trhead1_td3.style.padding = "2px 60px 2px 10px";
     trhead1.appendChild(trhead1_td3);
-    trhead1_td3.append("");
+    trhead1_td3.append("   ");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 01
     let tr1 = document.createElement("tr");
-    table.appendChild(tr1);
+    tbody.appendChild(tr1);
     // ------------------------------------------------------
     let tr1_td1 = document.createElement("td");
-    tr1_td1.style.padding = "2px 50px 2px 10px";
+    tr1_td1.style.padding = "2px 60px 2px 10px";
     tr1.appendChild(tr1_td1);
     tr1_td1.append("Total Monthly Limit");
     // ------------------------------------------------------
@@ -144,19 +148,19 @@ function injectID() {
     tr1_td2.append(totalMonthlylimit + " GB");
     // ------------------------------------------------------
     let tr1_td3 = document.createElement("td");
-    tr1_td3.style.padding = "2px 50px 2px 10px";
+    tr1_td3.style.padding = "2px 60px 2px 10px";
     tr1.appendChild(tr1_td3);
     tr1_td3.append("");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 02
     let tr2 = document.createElement("tr");
-    table.appendChild(tr2);
+    tbody.appendChild(tr2);
     // ------------------------------------------------------
     let tr2_td1 = document.createElement("td");
-    tr2_td1.style.padding = "2px 50px 2px 10px";
+    tr2_td1.style.padding = "2px 60px 2px 10px";
     tr2.appendChild(tr2_td1);
     tr2_td1.append("Total Remaining");
     // ------------------------------------------------------
@@ -165,7 +169,7 @@ function injectID() {
     tr2_td2.append(totalRemaining + " GB");
     // ------------------------------------------------------
     let tr2_td3 = document.createElement("td");
-    tr2_td3.style.padding = "2px 50px 2px 10px";
+    tr2_td3.style.padding = "2px 60px 2px 10px";
     tr2.appendChild(tr2_td3);
     tr2_td3.append("");
 
@@ -174,15 +178,15 @@ function injectID() {
     tr2_td3.appendChild(tr2_td3_span);
     tr2_td3_span.append("(For the upcoming " + noOfComingDays + " days)");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 03
     let tr3 = document.createElement("tr");
-    table.appendChild(tr3);
+    tbody.appendChild(tr3);
     // ------------------------------------------------------
     let tr3_td1 = document.createElement("td");
-    tr3_td1.style.padding = "2px 50px 2px 10px";
+    tr3_td1.style.padding = "2px 60px 2px 10px";
     tr3.appendChild(tr3_td1);
     tr3_td1.append("Total Used");
     // ------------------------------------------------------
@@ -191,7 +195,7 @@ function injectID() {
     tr3_td2.append(totalUsed + " GB");
     // ------------------------------------------------------
     let tr3_td3 = document.createElement("td");
-    tr3_td3.style.padding = "2px 50px 2px 10px";
+    tr3_td3.style.padding = "2px 60px 2px 10px";
     tr3.appendChild(tr3_td3);
     tr3_td3.append("");
 
@@ -200,14 +204,14 @@ function injectID() {
     tr3_td3.appendChild(tr3_td3_span);
     tr3_td3_span.append("(Used in " + dayOfTheMonth + " days)");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
     // TR 03 End 01
     let tr3e01 = document.createElement("tr");
-    table.appendChild(tr3e01);
+    tbody.appendChild(tr3e01);
     // ------------------------------------------------------
     let tr3e01_td1 = document.createElement("td");
-    tr3e01_td1.style.padding = "2px 50px 2px 10px";
+    tr3e01_td1.style.padding = "2px 60px 2px 10px";
     tr3e01.appendChild(tr3e01_td1);
     tr3e01_td1.append("Data will be exceeded in ");
     // ------------------------------------------------------
@@ -216,7 +220,7 @@ function injectID() {
     tr3e01_td2.append(dataExceeded + " days");
     // ------------------------------------------------------
     let tr3e01_td3 = document.createElement("td");
-    tr3e01_td3.style.padding = "2px 50px 2px 10px";
+    tr3e01_td3.style.padding = "2px 60px 2px 10px";
     tr3e01.appendChild(tr3e01_td3);
     tr3e01_td3.append("");
 
@@ -225,15 +229,15 @@ function injectID() {
     tr3e01_td3.appendChild(tr3e01_td3_span);
     tr3e01_td3_span.append(dataExceededWarning);
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 03 End 02
     let tr3e02 = document.createElement("tr");
-    table.appendChild(tr3e02);
+    tbody.appendChild(tr3e02);
     // ------------------------------------------------------
     let tr3e02_td1 = document.createElement("td");
-    tr3e02_td1.style.padding = "2px 50px 2px 10px";
+    tr3e02_td1.style.padding = "2px 60px 2px 10px";
     tr3e02.appendChild(tr3e02_td1);
     tr3e02_td1.append("Volume will be reset in ");
     // ------------------------------------------------------
@@ -242,19 +246,19 @@ function injectID() {
     tr3e02_td2.append(noOfComingDays + " days");
     // ------------------------------------------------------
     let tr3e02_td3 = document.createElement("td");
-    tr3e02_td3.style.padding = "2px 50px 2px 10px";
+    tr3e02_td3.style.padding = "2px 60px 2px 10px";
     tr3e02.appendChild(tr3e02_td3);
     tr3e02_td3.append("");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR BR 01
     let trbr01 = document.createElement("tr");
-    table.appendChild(trbr01);
+    tbody.appendChild(trbr01);
     // ------------------------------------------------------
     let trbr01_td1 = document.createElement("td");
-    trbr01_td1.style.padding = "2px 50px 2px 10px";
+    trbr01_td1.style.padding = "2px 60px 2px 10px";
     trbr01.appendChild(trbr01_td1);
     trbr01_td1.append("   ");
     // ------------------------------------------------------
@@ -263,19 +267,19 @@ function injectID() {
     trbr01_td2.append("   ");
     // ------------------------------------------------------
     let trbr01_td3 = document.createElement("td");
-    trbr01_td3.style.padding = "2px 50px 2px 10px";
+    trbr01_td3.style.padding = "2px 60px 2px 10px";
     trbr01.appendChild(trbr01_td3);
     trbr01_td3.append("   ");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
     // TR Head 02
     let trhead2 = document.createElement("tr");
 	trhead2.className = "info";
-    table.appendChild(trhead2);
+    tbody.appendChild(trhead2);
     // ------------------------------------------------------
     let trhead2_td1 = document.createElement("td");
-    trhead2_td1.style.padding = "2px 50px 2px 10px";
+    trhead2_td1.style.padding = "2px 60px 2px 10px";
     trhead2.appendChild(trhead2_td1);
     let trhead2_td1_strong = document.createElement("strong");
     trhead2_td1.appendChild(trhead2_td1_strong);
@@ -284,22 +288,22 @@ function injectID() {
     // ------------------------------------------------------
     let trhead2_td2 = document.createElement("td");
     trhead2.appendChild(trhead2_td2);
-    trhead2_td2.append("");
+    trhead2_td2.append("   ");
     // ------------------------------------------------------
     let trhead2_td3 = document.createElement("td");
-    trhead2_td3.style.padding = "2px 50px 2px 10px";
+    trhead2_td3.style.padding = "2px 60px 2px 10px";
     trhead2.appendChild(trhead2_td3);
-    trhead2_td3.append("");
+    trhead2_td3.append("   ");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 04
     let tr4 = document.createElement("tr");
-    table.appendChild(tr4);
+    tbody.appendChild(tr4);
     // ------------------------------------------------------
     let tr4_td1 = document.createElement("td");
-    tr4_td1.style.padding = "2px 50px 2px 10px";
+    tr4_td1.style.padding = "2px 60px 2px 10px";
     tr4.appendChild(tr4_td1);
     tr4_td1.append("Total Peak Data Monthly Limit");
     // ------------------------------------------------------
@@ -308,19 +312,19 @@ function injectID() {
     tr4_td2.append(peakMonthlylimit + " GB");
     // ------------------------------------------------------
     let tr4_td3 = document.createElement("td");
-    tr4_td3.style.padding = "2px 50px 2px 10px";
+    tr4_td3.style.padding = "2px 60px 2px 10px";
     tr4.appendChild(tr4_td3);
     tr4_td3.append("");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 05
     let tr5 = document.createElement("tr");
-    table.appendChild(tr5);
+    tbody.appendChild(tr5);
     // ------------------------------------------------------
     let tr5_td1 = document.createElement("td");
-    tr5_td1.style.padding = "2px 50px 2px 10px";
+    tr5_td1.style.padding = "2px 60px 2px 10px";
     tr5.appendChild(tr5_td1);
     tr5_td1.append("Total Peak Data Remaining");
     // ------------------------------------------------------
@@ -329,19 +333,19 @@ function injectID() {
     tr5_td2.append(peakRemaining + " GB");
     // ------------------------------------------------------
     let tr5_td3 = document.createElement("td");
-    tr5_td3.style.padding = "2px 50px 2px 10px";
+    tr5_td3.style.padding = "2px 60px 2px 10px";
     tr5.appendChild(tr5_td3);
     tr5_td3.append("");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 06
     let tr6 = document.createElement("tr");
-    table.appendChild(tr6);
+    tbody.appendChild(tr6);
     // ------------------------------------------------------
     let tr6_td1 = document.createElement("td");
-    tr6_td1.style.padding = "2px 50px 2px 10px";
+    tr6_td1.style.padding = "2px 60px 2px 10px";
     tr6.appendChild(tr6_td1);
     tr6_td1.append("Total Peak Data Used");
     // ------------------------------------------------------
@@ -350,19 +354,19 @@ function injectID() {
     tr6_td2.append(peakUsed + " GB");
     // ------------------------------------------------------
     let tr6_td3 = document.createElement("td");
-    tr6_td3.style.padding = "2px 50px 2px 10px";
+    tr6_td3.style.padding = "2px 60px 2px 10px";
     tr6.appendChild(tr6_td3);
     tr6_td3.append("");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 06 01
     let tr601 = document.createElement("tr");
-    table.appendChild(tr601);
+    tbody.appendChild(tr601);
     // ------------------------------------------------------
     let tr601_td1 = document.createElement("td");
-    tr601_td1.style.padding = "2px 50px 2px 10px";
+    tr601_td1.style.padding = "2px 60px 2px 10px";
     tr601.appendChild(tr601_td1);
     tr601_td1.append("Peak data will be exceeded in ");
     // ------------------------------------------------------
@@ -371,7 +375,7 @@ function injectID() {
     tr601_td2.append(peakDataExceeded + " days");
     // ------------------------------------------------------
     let tr601_td3 = document.createElement("td");
-    tr601_td3.style.padding = "2px 50px 2px 10px";
+    tr601_td3.style.padding = "2px 60px 2px 10px";
     tr601.appendChild(tr601_td3);
     tr601_td3.append("");
 
@@ -380,15 +384,15 @@ function injectID() {
     tr601_td3.appendChild(tr601_td3_span);
     tr601_td3_span.append(peakDataExceededWarning);
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR BR 02
     let trbr02 = document.createElement("tr");
-    table.appendChild(trbr02);
+    tbody.appendChild(trbr02);
     // ------------------------------------------------------
     let trbr02_td1 = document.createElement("td");
-    trbr02_td1.style.padding = "2px 50px 2px 10px";
+    trbr02_td1.style.padding = "2px 60px 2px 10px";
     trbr02.appendChild(trbr02_td1);
     trbr02_td1.append("   ");
     // ------------------------------------------------------
@@ -397,20 +401,20 @@ function injectID() {
     trbr02_td2.append("   ");
     // ------------------------------------------------------
     let trbr02_td3 = document.createElement("td");
-    trbr02_td3.style.padding = "2px 50px 2px 10px";
+    trbr02_td3.style.padding = "2px 60px 2px 10px";
     trbr02.appendChild(trbr02_td3);
     trbr02_td3.append("   ");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR Head 01
     let trhead3 = document.createElement("tr");
 	trhead3.className = "info";
-    table.appendChild(trhead3);
+    tbody.appendChild(trhead3);
     // ------------------------------------------------------
     let trhead3_td1 = document.createElement("td");
-    trhead3_td1.style.padding = "2px 50px 2px 10px";
+    trhead3_td1.style.padding = "2px 60px 2px 10px";
     trhead3.appendChild(trhead3_td1);
     let trhead3_td1_strong = document.createElement("strong");
     trhead3_td1.appendChild(trhead3_td1_strong);
@@ -419,22 +423,22 @@ function injectID() {
     // ------------------------------------------------------
     let trhead3_td2 = document.createElement("td");
     trhead3.appendChild(trhead3_td2);
-    trhead3_td2.append("");
+    trhead3_td2.append("   ");
     // ------------------------------------------------------
     let trhead3_td3 = document.createElement("td");
-    trhead3_td3.style.padding = "2px 50px 2px 10px";
+    trhead3_td3.style.padding = "2px 60px 2px 10px";
     trhead3.appendChild(trhead3_td3);
-    trhead3_td3.append("");
+    trhead3_td3.append("   ");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 07
     let tr7 = document.createElement("tr");
-    table.appendChild(tr7);
+    tbody.appendChild(tr7);
     // ------------------------------------------------------
     let tr7_td1 = document.createElement("td");
-    tr7_td1.style.padding = "2px 50px 2px 10px";
+    tr7_td1.style.padding = "2px 60px 2px 10px";
     tr7.appendChild(tr7_td1);
     tr7_td1.append("Total Off Peak Monthly Limit");
     // ------------------------------------------------------
@@ -443,19 +447,19 @@ function injectID() {
     tr7_td2.append(offPeakMonthlylimit + " GB");
     // ------------------------------------------------------
     let tr7_td3 = document.createElement("td");
-    tr7_td3.style.padding = "2px 50px 2px 10px";
+    tr7_td3.style.padding = "2px 60px 2px 10px";
     tr7.appendChild(tr7_td3);
     tr7_td3.append("");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 08
     let tr8 = document.createElement("tr");
-    table.appendChild(tr8);
+    tbody.appendChild(tr8);
     // ------------------------------------------------------
     let tr8_td1 = document.createElement("td");
-    tr8_td1.style.padding = "2px 50px 2px 10px";
+    tr8_td1.style.padding = "2px 60px 2px 10px";
     tr8.appendChild(tr8_td1);
     tr8_td1.append("Total Off Peak Remaining");
     // ------------------------------------------------------
@@ -464,19 +468,19 @@ function injectID() {
     tr8_td2.append(offPeakRemaining + " GB");
     // ------------------------------------------------------
     let tr8_td3 = document.createElement("td");
-    tr8_td3.style.padding = "2px 50px 2px 10px";
+    tr8_td3.style.padding = "2px 60px 2px 10px";
     tr8.appendChild(tr8_td3);
     tr8_td3.append("");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 09
     let tr9 = document.createElement("tr");
-    table.appendChild(tr9);
+    tbody.appendChild(tr9);
     // ------------------------------------------------------
     let tr9_td1 = document.createElement("td");
-    tr9_td1.style.padding = "2px 50px 2px 10px";
+    tr9_td1.style.padding = "2px 60px 2px 10px";
     tr9.appendChild(tr9_td1);
     tr9_td1.append("Total Off Peak Used");
     // ------------------------------------------------------
@@ -485,18 +489,18 @@ function injectID() {
     tr9_td2.append(offPeakUsed + " GB");
     // ------------------------------------------------------
     let tr9_td3 = document.createElement("td");
-    tr9_td3.style.padding = "2px 50px 2px 10px";
+    tr9_td3.style.padding = "2px 60px 2px 10px";
     tr9.appendChild(tr9_td3);
     tr9_td3.append("");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
     // TR 09 01
     let tr901 = document.createElement("tr");
-    table.appendChild(tr901);
+    tbody.appendChild(tr901);
     // ------------------------------------------------------
     let tr901_td1 = document.createElement("td");
-    tr901_td1.style.padding = "2px 50px 2px 10px";
+    tr901_td1.style.padding = "2px 60px 2px 10px";
     tr901.appendChild(tr901_td1);
     tr901_td1.append("Off Peak data will be exceeded in ");
     // ------------------------------------------------------
@@ -505,7 +509,7 @@ function injectID() {
     tr901_td2.append(offPeakDataExceeded + " days");
     // ------------------------------------------------------
     let tr901_td3 = document.createElement("td");
-    tr901_td3.style.padding = "2px 50px 2px 10px";
+    tr901_td3.style.padding = "2px 60px 2px 10px";
     tr901.appendChild(tr901_td3);
     tr901_td3.append("");
 
@@ -514,15 +518,15 @@ function injectID() {
     tr901_td3.appendChild(tr901_td3_span);
     tr901_td3_span.append(offPeakDataExceededWarning);
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR BR 03
     let trbr03 = document.createElement("tr");
-    table.appendChild(trbr03);
+    tbody.appendChild(trbr03);
     // ------------------------------------------------------
     let trbr03_td1 = document.createElement("td");
-    trbr03_td1.style.padding = "2px 50px 2px 10px";
+    trbr03_td1.style.padding = "2px 60px 2px 10px";
     trbr03.appendChild(trbr03_td1);
     trbr03_td1.append("   ");
     // ------------------------------------------------------
@@ -531,20 +535,20 @@ function injectID() {
     trbr03_td2.append("   ");
     // ------------------------------------------------------
     let trbr03_td3 = document.createElement("td");
-    trbr03_td3.style.padding = "2px 50px 2px 10px";
+    trbr03_td3.style.padding = "2px 60px 2px 10px";
     trbr03.appendChild(trbr03_td3);
     trbr03_td3.append("   ");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR Head 04
     let trhead4 = document.createElement("tr");
 	trhead4.className = "info";
-    table.appendChild(trhead4);
+    tbody.appendChild(trhead4);
     // ------------------------------------------------------
     let trhead4_td1 = document.createElement("td");
-    trhead4_td1.style.padding = "2px 50px 2px 10px";
+    trhead4_td1.style.padding = "2px 60px 2px 10px";
     trhead4.appendChild(trhead4_td1);
     let trhead4_td1_strong = document.createElement("strong");
     trhead4_td1.appendChild(trhead4_td1_strong);
@@ -553,22 +557,22 @@ function injectID() {
     // ------------------------------------------------------
     let trhead4_td2 = document.createElement("td");
     trhead4.appendChild(trhead4_td2);
-    trhead4_td2.append("");
+    trhead4_td2.append("   ");
     // ------------------------------------------------------
     let trhead4_td3 = document.createElement("td");
-    trhead4_td3.style.padding = "2px 50px 2px 10px";
+    trhead4_td3.style.padding = "2px 60px 2px 10px";
     trhead4.appendChild(trhead4_td3);
-    trhead4_td3.append("");
+    trhead4_td3.append("   ");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 10
     let tr10 = document.createElement("tr");
-    table.appendChild(tr10);
+    tbody.appendChild(tr10);
     // ------------------------------------------------------
     let tr10_td1 = document.createElement("td");
-    tr10_td1.style.padding = "2px 50px 2px 10px";
+    tr10_td1.style.padding = "2px 60px 2px 10px";
     tr10.appendChild(tr10_td1);
     tr10_td1.append("Allocated Peak Data Per Day");
     // ------------------------------------------------------
@@ -577,7 +581,7 @@ function injectID() {
     tr10_td2.append(peakDataPerDay + " GB");
     // ------------------------------------------------------
     let tr10_td3 = document.createElement("td");
-    tr10_td3.style.padding = "2px 50px 2px 10px";
+    tr10_td3.style.padding = "2px 60px 2px 10px";
     tr10.appendChild(tr10_td3);
 
     let tr10_td3_span = document.createElement("span");
@@ -585,15 +589,15 @@ function injectID() {
     tr10_td3.appendChild(tr10_td3_span);
     tr10_td3_span.append("(Total Peak Data/" + daysInThisMonth + ")");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 11
     let tr11 = document.createElement("tr");
-    table.appendChild(tr11);
+    tbody.appendChild(tr11);
     // ------------------------------------------------------
     let tr11_td1 = document.createElement("td");
-    tr11_td1.style.padding = "2px 50px 2px 10px";
+    tr11_td1.style.padding = "2px 60px 2px 10px";
     tr11.appendChild(tr11_td1);
     tr11_td1.append("Available Peak Data Per Day");
     // ------------------------------------------------------
@@ -602,7 +606,7 @@ function injectID() {
     tr11_td2.append(peakDataAvailablePerDay + " GB");
     // ------------------------------------------------------
     let tr11_td3 = document.createElement("td");
-    tr11_td3.style.padding = "2px 50px 2px 10px";
+    tr11_td3.style.padding = "2px 60px 2px 10px";
     tr11.appendChild(tr11_td3);
 
     let tr11_td3_span = document.createElement("span");
@@ -610,15 +614,15 @@ function injectID() {
     tr11_td3.appendChild(tr11_td3_span);
     tr11_td3_span.append("(Available Peak Data/" + (daysInThisMonth - dayOfTheMonth) + ")");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 12
     let tr12 = document.createElement("tr");
-    table.appendChild(tr12);
+    tbody.appendChild(tr12);
     // ------------------------------------------------------
     let tr12_td1 = document.createElement("td");
-    tr12_td1.style.padding = "2px 50px 2px 10px";
+    tr12_td1.style.padding = "2px 60px 2px 10px";
     tr12.appendChild(tr12_td1);
     tr12_td1.append("Average Peak Data Usage");
     // ------------------------------------------------------
@@ -627,7 +631,7 @@ function injectID() {
     tr12_td2.append(avgPeakUsage + " GB");
     // ------------------------------------------------------
     let tr12_td3 = document.createElement("td");
-    tr12_td3.style.padding = "2px 50px 2px 10px";
+    tr12_td3.style.padding = "2px 60px 2px 10px";
     tr12.appendChild(tr12_td3);
 
     let tr12_td3_span = document.createElement("span");
@@ -635,15 +639,15 @@ function injectID() {
     tr12_td3.appendChild(tr12_td3_span);
     tr12_td3_span.append("(Total Peak Used Data/" + dayOfTheMonth + ")");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR BR 04
     let trbr04 = document.createElement("tr");
-    table.appendChild(trbr04);
+    tbody.appendChild(trbr04);
     // ------------------------------------------------------
     let trbr04_td1 = document.createElement("td");
-    trbr04_td1.style.padding = "2px 50px 2px 10px";
+    trbr04_td1.style.padding = "2px 60px 2px 10px";
     trbr04.appendChild(trbr04_td1);
     trbr04_td1.append("   ");
     // ------------------------------------------------------
@@ -652,20 +656,20 @@ function injectID() {
     trbr04_td2.append("   ");
     // ------------------------------------------------------
     let trbr04_td3 = document.createElement("td");
-    trbr04_td3.style.padding = "2px 50px 2px 10px";
+    trbr04_td3.style.padding = "2px 60px 2px 10px";
     trbr04.appendChild(trbr04_td3);
     trbr04_td3.append("   ");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR Head 03
     let trhead5 = document.createElement("tr");
 	trhead5.className = "info";
-    table.appendChild(trhead5);
+    tbody.appendChild(trhead5);
     // ------------------------------------------------------
     let trhead5_td1 = document.createElement("td");
-    trhead5_td1.style.padding = "2px 50px 2px 10px";
+    trhead5_td1.style.padding = "2px 60px 2px 10px";
     trhead5.appendChild(trhead5_td1);
     let trhead5_td1_strong = document.createElement("strong");
     trhead5_td1.appendChild(trhead5_td1_strong);
@@ -674,22 +678,22 @@ function injectID() {
     // ------------------------------------------------------
     let trhead5_td2 = document.createElement("td");
     trhead5.appendChild(trhead5_td2);
-    trhead5_td2.append("");
+    trhead5_td2.append("   ");
     // ------------------------------------------------------
     let trhead5_td3 = document.createElement("td");
-    trhead5_td3.style.padding = "2px 50px 2px 10px";
+    trhead5_td3.style.padding = "2px 60px 2px 10px";
     trhead5.appendChild(trhead5_td3);
-    trhead5_td3.append("");
+    trhead5_td3.append("   ");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 13
     let tr13 = document.createElement("tr");
-    table.appendChild(tr13);
+    tbody.appendChild(tr13);
     // ------------------------------------------------------
     let tr13_td1 = document.createElement("td");
-    tr13_td1.style.padding = "2px 50px 2px 10px";
+    tr13_td1.style.padding = "2px 60px 2px 10px";
     tr13.appendChild(tr13_td1);
     tr13_td1.append("Allocated Off Peak Data Per Day");
     // ------------------------------------------------------
@@ -698,7 +702,7 @@ function injectID() {
     tr13_td2.append(offPeakDataPerDay + " GB");
     // ------------------------------------------------------
     let tr13_td3 = document.createElement("td");
-    tr13_td3.style.padding = "2px 50px 2px 10px";
+    tr13_td3.style.padding = "2px 60px 2px 10px";
     tr13.appendChild(tr13_td3);
 
     let tr13_td3_span = document.createElement("span");
@@ -706,15 +710,15 @@ function injectID() {
     tr13_td3.appendChild(tr13_td3_span);
     tr13_td3_span.append("(Total Off Peak Used Data/" + daysInThisMonth + ")");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 14
     let tr14 = document.createElement("tr");
-    table.appendChild(tr14);
+    tbody.appendChild(tr14);
     // ------------------------------------------------------
     let tr14_td1 = document.createElement("td");
-    tr14_td1.style.padding = "2px 50px 2px 10px";
+    tr14_td1.style.padding = "2px 60px 2px 10px";
     tr14.appendChild(tr14_td1);
     tr14_td1.append("Available Off Peak Data Per Day");
     // ------------------------------------------------------
@@ -723,7 +727,7 @@ function injectID() {
     tr14_td2.append(offPeakDataAvailablePerDay + " GB");
     // ------------------------------------------------------
     let tr14_td3 = document.createElement("td");
-    tr14_td3.style.padding = "2px 50px 2px 10px";
+    tr14_td3.style.padding = "2px 60px 2px 10px";
     tr14.appendChild(tr14_td3);
 
     let tr14_td3_span = document.createElement("span");
@@ -731,15 +735,15 @@ function injectID() {
     tr14_td3.appendChild(tr14_td3_span);
     tr14_td3_span.append("(Available Off Peak Data/" + (daysInThisMonth - dayOfTheMonth) + ")");
     // ------------------------------------------------------
-    table.append("\n");
+    tbody.append("\n");
 
 
     // TR 15
     let tr15 = document.createElement("tr");
-    table.appendChild(tr15);
+    tbody.appendChild(tr15);
     // ------------------------------------------------------
     let tr15_td1 = document.createElement("td");
-    tr15_td1.style.padding = "2px 50px 2px 10px";
+    tr15_td1.style.padding = "2px 60px 2px 10px";
     tr15.appendChild(tr15_td1);
     tr15_td1.append("Average Off Peak Data Usage");
     // ------------------------------------------------------
@@ -748,7 +752,7 @@ function injectID() {
     tr15_td2.append(avgOffPeakUsage + " GB");
     // ------------------------------------------------------
     let tr15_td3 = document.createElement("td");
-    tr15_td3.style.padding = "2px 50px 2px 10px";
+    tr15_td3.style.padding = "2px 60px 2px 10px";
     tr15.appendChild(tr15_td3);
 
     let tr15_td3_span = document.createElement("span");
