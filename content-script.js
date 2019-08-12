@@ -69,11 +69,11 @@ offPeakDataExceeded = dataExceededFun.val;
 offPeakDataExceededWarning = dataExceededFun.warning;
 
 funInsertData2Page();
-customStyle01();
-customStyle02();
-customStyle03();
-customStyle04();
-customStyle05();
+funCustomStyle01();
+funCustomStyle02();
+funCustomStyle03();
+funCustomStyle04();
+funCustomStyle05();
 
 
 function funDebug() {	
@@ -836,7 +836,7 @@ function funInsertData2Page() {
 }
 
 
-function customStyle01() {
+function funCustomStyle01() {
 
     var path = '/html/body/div[3]/div/div[2]/div/div';
     var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -847,7 +847,7 @@ function customStyle01() {
     //element.classList.remove("mystyle");
 }
 
-function customStyle02() {
+function funCustomStyle02() {
 
     var path = '/html/body/div[3]/div/div[2]';
     var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -859,7 +859,7 @@ function customStyle02() {
     element.classList.add("container");
 }
 
-function customStyle03() {
+function funCustomStyle03() {
 
     var path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div';
     var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -869,7 +869,7 @@ function customStyle03() {
     element.style.padding = "40px";
 }
 
-function customStyle04() {
+function funCustomStyle04() {
 
     var path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[5]/div/div/div/h4';
     var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -879,7 +879,7 @@ function customStyle04() {
     element.style.padding = "1px 10px 5px 10px";
 }
 
-function customStyle05() {
+function funCustomStyle05() {
 
     var path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[6]';
     var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
