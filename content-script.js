@@ -101,12 +101,13 @@ function injectID() {
     maindiv.append("\n");
 
     let table = document.createElement("table");
-    //table.className = "table table-hover";
+    table.className = "table table-hover table-condensed";
     maindiv.appendChild(table);
     table.append("\n");
 
     // TR Head 01
     let trhead1 = document.createElement("tr");
+	trhead1.className = "info";
     table.appendChild(trhead1);
     // ------------------------------------------------------
     let trhead1_td1 = document.createElement("td");
@@ -270,6 +271,7 @@ function injectID() {
 
     // TR Head 02
     let trhead2 = document.createElement("tr");
+	trhead2.className = "info";
     table.appendChild(trhead2);
     // ------------------------------------------------------
     let trhead2_td1 = document.createElement("td");
@@ -404,6 +406,7 @@ function injectID() {
 
     // TR Head 01
     let trhead3 = document.createElement("tr");
+	trhead3.className = "info";
     table.appendChild(trhead3);
     // ------------------------------------------------------
     let trhead3_td1 = document.createElement("td");
@@ -537,6 +540,7 @@ function injectID() {
 
     // TR Head 04
     let trhead4 = document.createElement("tr");
+	trhead4.className = "info";
     table.appendChild(trhead4);
     // ------------------------------------------------------
     let trhead4_td1 = document.createElement("td");
@@ -657,6 +661,7 @@ function injectID() {
 
     // TR Head 03
     let trhead5 = document.createElement("tr");
+	trhead5.className = "info";
     table.appendChild(trhead5);
     // ------------------------------------------------------
     let trhead5_td1 = document.createElement("td");
