@@ -1,75 +1,74 @@
-var totalMonthlylimit = parseFloat((document.evaluate('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/div[2]/div[1]/h5/strong/text()', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).data.toString().replace(/[^\d.]/g, '')); // 90.0GB 
-var totalRemaining = parseFloat((document.evaluate('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/div[2]/div[2]/h5/strong/text()', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).data.toString().replace(/[^\d.]/g, '')); // 73.3GB
-var totalUsed = parseFloat((document.evaluate('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/div[2]/div[3]/h5/strong/text()', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).data.toString().replace(/[^\d.]/g, '')); // 16.7GB
 
-var peakMonthlylimit = parseFloat((document.evaluate('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[2]/div[1]/h5/strong/text()', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).data.toString().replace(/[^\d.]/g, '')); // 36.0GB
-var peakRemaining = parseFloat((document.evaluate('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[2]/div[2]/h5/strong/text()', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).data.toString().replace(/[^\d.]/g, '')); // 26.6GB
-var peakUsed = parseFloat((document.evaluate('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[2]/div[3]/h5/strong/text()', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).data.toString().replace(/[^\d.]/g, '')); // 09.4GB
+var totalMonthlylimit = 0;
+var totalRemaining = 0;
+var totalUsed = 0;
+var peakMonthlylimit = 0;
+var peakRemaining = 0;
 
-var offPeakMonthlylimit = Number((totalMonthlylimit - peakMonthlylimit).toFixed(2)); // 90-36 = 54GB
-var offPeakUsed = Number((totalUsed - peakUsed).toFixed(2)); // 16.7-09.4 = 07.3GB
-var offPeakRemaining = Number((offPeakMonthlylimit - offPeakUsed).toFixed(2)); // 54-07.3 = 46.7GB
+var offPeakMonthlylimit = 0; 
+var offPeakUsed = 0; 
+var offPeakRemaining = 0; 
 
-var daysInThisMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate(); // 31
-var dayOfTheMonth = new Date().getDate(); // 11
-var noOfComingDays = daysInThisMonth - dayOfTheMonth; // 31-11 = 20
+var daysInThisMonth = 0; 
+var dayOfTheMonth = 0; 
+var noOfComingDays = 0; 
 
-var peakDataPerDay = Number((peakMonthlylimit / daysInThisMonth).toFixed(2));
-var peakDataAvailablePerDay = Number((peakRemaining / (daysInThisMonth - dayOfTheMonth)).toFixed(2));
+var peakDataPerDay = 0;
+var peakDataAvailablePerDay = 0;
 
-var offPeakDataPerDay = Number((totalMonthlylimit / daysInThisMonth).toFixed(2));
-var offPeakDataAvailablePerDay = Number((offPeakRemaining / noOfComingDays).toFixed(2));
+var offPeakDataPerDay = 0;
+var offPeakDataAvailablePerDay = 0;
 
-var avgUsage = Number((totalUsed / dayOfTheMonth).toFixed(2));
-var avgPeakUsage = Number((peakUsed / dayOfTheMonth).toFixed(2));
-var avgOffPeakUsage = Number((offPeakUsed / dayOfTheMonth).toFixed(2));
+var avgUsage = 0;
+var avgPeakUsage = 0;
+var avgOffPeakUsage = 0;
+
+var dataExceeded = 0;
+var peakDataExceeded = 0;
+var offPeakDataExceeded = 0;
 
 var dataExceededWarning = "";
-var dataExceeded = Number((totalRemaining / avgUsage).toFixed(0));
-if (dataExceeded > noOfComingDays) {
-    dataExceeded = noOfComingDays;
-} else {
-    dataExceededWarning = "⚠️";
-}
-
 var peakDataExceededWarning = "";
-var peakDataExceeded = Number((peakRemaining / avgPeakUsage).toFixed(0));
-if (peakDataExceeded > noOfComingDays) {
-    peakDataExceeded = noOfComingDays;
-} else {
-    peakDataExceededWarning = "⚠️";
-}
-
 var offPeakDataExceededWarning = "";
-var offPeakDataExceeded = Number((offPeakRemaining / avgOffPeakUsage).toFixed(0));
-if (offPeakDataExceeded > noOfComingDays) {
-    offPeakDataExceeded = noOfComingDays;
-} else {
-    offPeakDataExceededWarning = "⚠️";
-}
 
-//console.log(totalMonthlylimit);
-//console.log(totalRemaining);
-//console.log(totalUsed);
+totalMonthlylimit = funCircumference('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/div[2]/div[1]/h5/strong/text()'); // 90.0GB 
+totalRemaining = funCircumference('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/div[2]/div[2]/h5/strong/text()'); // 73.3GB
+totalUsed = funCircumference('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/div[2]/div[3]/h5/strong/text()'); // 16.7GB
+peakMonthlylimit = funCircumference('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[2]/div[1]/h5/strong/text()'); // 36.0GB
+peakRemaining = funCircumference('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[2]/div[2]/h5/strong/text()'); // 26.6GB
+peakUsed = funCircumference('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div/div[2]/div[3]/h5/strong/text()'); // 09.4GB
 
-//console.log(peakMonthlylimit);
-//console.log(peakRemaining);
-//console.log(peakUsed);
+offPeakMonthlylimit = Number((totalMonthlylimit - peakMonthlylimit).toFixed(2)) || 0; // 90-36 = 54GB
+offPeakUsed = Number((totalUsed - peakUsed).toFixed(2)) || 0; // 16.7-09.4 = 07.3GB
+offPeakRemaining = Number((offPeakMonthlylimit - offPeakUsed).toFixed(2)) || 0; // 54-07.3 = 46.7GB
 
-//console.log(offPeakMonthlylimit);
-//console.log(offPeakRemaining);
-//console.log(offPeakUsed);
+daysInThisMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate(); // 31
+dayOfTheMonth = new Date().getDate(); // 11
+noOfComingDays = daysInThisMonth - dayOfTheMonth; // 31-11 = 20
 
-//console.log(peakDataPerDay);
-//console.log(peakDataAvailablePerDay);
-//console.log(avgPeakUsage);
+peakDataPerDay = Number((peakMonthlylimit / daysInThisMonth).toFixed(2)) || 0;
+peakDataAvailablePerDay = Number((peakRemaining / (daysInThisMonth - dayOfTheMonth)).toFixed(2)) || 0;
 
-//console.log(offPeakDataPerDay);
-//console.log(offPeakDataAvailablePerDay);
-//console.log(avgOffPeakUsage);
+offPeakDataPerDay = Number((totalMonthlylimit / daysInThisMonth).toFixed(2)) || 0;
+offPeakDataAvailablePerDay = Number((offPeakRemaining / noOfComingDays).toFixed(2)) || 0;
 
+avgUsage = Number((totalUsed / dayOfTheMonth).toFixed(2)) || 0;
+avgPeakUsage = Number((peakUsed / dayOfTheMonth).toFixed(2)) || 0;
+avgOffPeakUsage = Number((offPeakUsed / dayOfTheMonth).toFixed(2)) || 0;
 
-injectID();
+dataExceededFun = funVolExceed(totalRemaining, avgUsage);
+dataExceeded = dataExceededFun.val;
+dataExceededWarning = dataExceededFun.warning;
+
+dataExceededFun = funVolExceed(peakRemaining, avgPeakUsage);
+peakDataExceeded = dataExceededFun.val;
+peakDataExceededWarning = dataExceededFun.warning;
+
+dataExceededFun = funVolExceed(offPeakRemaining, avgOffPeakUsage);
+offPeakDataExceeded = dataExceededFun.val;
+offPeakDataExceededWarning = dataExceededFun.warning;
+
+funInsertData2Page();
 customStyle01();
 customStyle02();
 customStyle03();
@@ -77,11 +76,77 @@ customStyle04();
 customStyle05();
 
 
-function injectID() {
+function funDebug() {	
+	console.log("totalMonthlylimit: " + totalMonthlylimit);
+	console.log("totalRemaining: " + totalRemaining);
+	console.log("totalUsed: " + totalUsed);
+	console.log("peakMonthlylimit: " + peakMonthlylimit);
+	console.log("peakRemaining: " + peakRemaining);
+
+	console.log("offPeakMonthlylimit: " + offPeakMonthlylimit); 
+	console.log("offPeakUsed: " + offPeakUsed); 
+	console.log("offPeakRemaining: " + offPeakRemaining); 
+
+	console.log("daysInThisMonth: " + daysInThisMonth); 
+	console.log("dayOfTheMonth: " + dayOfTheMonth); 
+	console.log("noOfComingDays: " + noOfComingDays); 
+
+	console.log("peakDataPerDay: " + peakDataPerDay);
+	console.log("peakDataAvailablePerDay: " + peakDataAvailablePerDay);
+
+	console.log("offPeakDataPerDay: " + offPeakDataPerDay);
+	console.log("offPeakDataAvailablePerDay: " + offPeakDataAvailablePerDay);
+
+	console.log("avgUsage: " + avgUsage);
+	console.log("avgPeakUsage: " + avgPeakUsage);
+	console.log("avgOffPeakUsage: " + avgOffPeakUsage);
+
+	console.log("dataExceeded: " + dataExceeded);
+	console.log("peakDataExceeded: " + peakDataExceeded);
+	console.log("offPeakDataExceeded: " + offPeakDataExceeded);
+
+	console.log("dataExceededWarning: " + dataExceededWarning);
+	console.log("peakDataExceededWarning: " + peakDataExceededWarning);
+	console.log("offPeakDataExceededWarning: " + offPeakDataExceededWarning);
+}
+
+function funCircumference(xPathValue) {
+    var x = 0;
+    try {
+        x = parseFloat((document.evaluate(xPathValue, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).data.toString().replace(/[^\d.]/g, '')) || 0;
+    } catch (err) {
+        x = 0;
+        console.log("Error: " + err);
+    } finally {
+    }
+    return x;
+}
+
+function funVolExceed(inputVal, inputAvg) {
+	var inputWarning = "";
+    try { 		
+		inputVal = Number((inputVal / inputAvg).toFixed(0)) || 0;
+		if (inputVal > noOfComingDays) {
+			inputVal = noOfComingDays;
+		} else {
+			inputWarning = "⚠️";
+		}
+    } catch (err) {
+		inputVal = 0;
+        console.log("Error: " + err);
+    } finally {
+    }
+    return {
+        val: inputVal,
+        warning: inputWarning,
+    };
+}
+
+function funInsertData2Page() {
 
     var path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[4]';
     var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-    element.id = 'injectIDName';
+    element.id = 'foreignDOMContainer';
 
     // INNER HTML
     var docFragment = document.createDocumentFragment(); // contains all gathered nodes
@@ -767,7 +832,7 @@ function injectID() {
     maindiv.append("\n");
 
     // Insert into original webpage
-    document.getElementById("injectIDName").appendChild(docFragment);
+    document.getElementById("foreignDOMContainer").appendChild(docFragment);
 }
 
 
