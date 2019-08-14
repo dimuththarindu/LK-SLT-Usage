@@ -68,6 +68,7 @@ dataExceededFun = funVolExceed(offPeakRemaining, avgOffPeakUsage);
 offPeakDataExceeded = dataExceededFun.val;
 offPeakDataExceededWarning = dataExceededFun.warning;
 
+funDebug(); // For debugging pursues
 funInsertData2Page();
 funCustomStyle01();
 funCustomStyle02();
@@ -206,7 +207,7 @@ function funInsertData2Page() {
     let tr1_td1 = document.createElement("td");
     tr1_td1.style.padding = "2px 60px 2px 10px";
     tr1.appendChild(tr1_td1);
-    tr1_td1.append("Total Monthly Limit");
+    tr1_td1.append("Monthly Bandwidth Limit");
     // ------------------------------------------------------
     let tr1_td2 = document.createElement("td");
     tr1.appendChild(tr1_td2);
@@ -216,6 +217,11 @@ function funInsertData2Page() {
     tr1_td3.style.padding = "2px 60px 2px 10px";
     tr1.appendChild(tr1_td3);
     tr1_td3.append("");
+	
+	let tr1_td3_span = document.createElement("span");
+    tr1_td3_span.className = "text-muted";
+    tr1_td3.appendChild(tr1_td3_span);
+    tr1_td3_span.append("(Data cap)");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -304,7 +310,7 @@ function funInsertData2Page() {
     let tr3e02_td1 = document.createElement("td");
     tr3e02_td1.style.padding = "2px 60px 2px 10px";
     tr3e02.appendChild(tr3e02_td1);
-    tr3e02_td1.append("Volume will be reset in ");
+    tr3e02_td1.append("Data cap will be reset in ");
     // ------------------------------------------------------
     let tr3e02_td2 = document.createElement("td");
     tr3e02.appendChild(tr3e02_td2);
