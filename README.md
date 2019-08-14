@@ -7,5 +7,5 @@ Please note that this extension does not have a interface.
 This extension does not require your login credentials or any credentials. 
 In addition, this extension does not store or send any data. All the functions are done locally.
 
-Firefox Extension: https://addons.mozilla.org/en-US/firefox/addon/lk-slt-usage/
+Firefox Extension: https://addons.mozilla.org/en-US/firefox/addon/lk-slt-usage/  
 Chrome Extension (manual installation required using the zip file): https://github.com/dimuththarindu/LK-SLT-Usage/releases/
