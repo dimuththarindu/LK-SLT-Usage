@@ -31,6 +31,9 @@ var dataExceededWarning = "";
 var peakDataExceededWarning = "";
 var offPeakDataExceededWarning = "";
 
+var percentagePeakRem = 0;
+var percentageOffPeakRem = 0;
+
 totalMonthlylimit = funCircumference('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/div[2]/div[1]/h5/strong/text()'); // 90.0GB 
 totalRemaining = funCircumference('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/div[2]/div[2]/h5/strong/text()'); // 73.3GB
 totalUsed = funCircumference('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/div[2]/div[3]/h5/strong/text()'); // 16.7GB
@@ -68,8 +71,16 @@ dataExceededFun = funVolExceed(offPeakRemaining, avgOffPeakUsage);
 offPeakDataExceeded = dataExceededFun.val;
 offPeakDataExceededWarning = dataExceededFun.warning;
 
+// Calculate Percentages
+percentagePeakRem = ((peakRemaining/peakMonthlylimit) * 100).toFixed(0);
+percentageOffPeakRem = ((offPeakRemaining/offPeakMonthlylimit) * 100).toFixed(0);
+
 funDebug(); // For debugging pursues
+
+funChangeName();
 funInsertData2Page();
+funInsertProgressBar();
+
 funCustomStyle01();
 funCustomStyle02();
 funCustomStyle03();
@@ -109,6 +120,10 @@ function funDebug() {
 	console.log("dataExceededWarning: " + dataExceededWarning);
 	console.log("peakDataExceededWarning: " + peakDataExceededWarning);
 	console.log("offPeakDataExceededWarning: " + offPeakDataExceededWarning);
+	
+	// Percentages Values
+	console.log("percentagePeakRem: " + percentagePeakRem);
+	console.log("percentageOffPeakRem: " + percentageOffPeakRem);
 }
 
 function funCircumference(xPathValue) {
@@ -142,6 +157,152 @@ function funVolExceed(inputVal, inputAvg) {
         warning: inputWarning,
     };
 }
+
+function funChangeName() {
+	
+	// Standard Volume // Peak Volume
+	var pathPV = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/h4';
+    var elePV = document.evaluate(pathPV, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    elePV.id = 'foreignDOMPV';
+	
+	//  Total (Standard+Free) Volume // Total Volume
+	var pathTV = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/h4';
+    var eleTV = document.evaluate(pathTV, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    eleTV.id = 'foreignDOMTV';
+	
+	document.getElementById("foreignDOMPV").innerHTML = "Peak Volume";
+	document.getElementById("foreignDOMTV").innerHTML = "Total Volume";
+}
+
+
+function funInsertProgressBar() {
+	
+	var path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div';
+    var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    element.id = 'foreignDOMPogressContainer';
+	
+	var docFragment = document.createDocumentFragment(); // contains all gathered nodes
+	
+	let lineBreak = document.createElement("p");
+	docFragment.appendChild(lineBreak);
+	lineBreak.append(" ");
+	
+	
+	let maindiv = document.createElement("div");
+    maindiv.className = "col-md-12";
+    docFragment.appendChild(maindiv);
+	
+	let maindivh4 = document.createElement("h4");
+    maindiv.appendChild(maindivh4);
+    maindivh4.append("Off-Peak Volume");
+    maindiv.append("\n");
+	
+	let ProgressDiv = document.createElement("div");
+    ProgressDiv.className = "progress";
+    maindiv.appendChild(ProgressDiv);
+    maindiv.append("\n");
+	
+	let ProgressBarDivA = document.createElement("div");
+    ProgressBarDivA.className = "progress-bar";
+	ProgressBarDivA.setAttribute("role", "progressbar");
+	ProgressBarDivA.setAttribute("aria-valuenow", "50");
+	ProgressBarDivA.setAttribute("aria-valuemin", "0");
+	ProgressBarDivA.setAttribute("aria-valuemax", "100");
+	ProgressBarDivA.style.width = percentageOffPeakRem + "%";  
+	ProgressBarDivA.style.backgroundColor = "#0d0548";
+    ProgressDiv.appendChild(ProgressBarDivA);
+	ProgressBarDivA.append(percentageOffPeakRem + "%");
+    maindiv.append("\n");
+	
+	let ProgressBarDivB = document.createElement("div");
+    ProgressBarDivB.className = "progress-bar";
+	ProgressBarDivB.setAttribute("role", "progressbar");
+	ProgressBarDivB.style.backgroundColor = "#87C7DE";
+	ProgressBarDivB.style.width = "0%";
+    ProgressDiv.appendChild(ProgressBarDivB);	
+    maindiv.append("\n");
+	
+	let row = document.createElement("div");
+	row.className = "row";
+	maindiv.appendChild(row);
+	maindiv.append("\n");
+	
+	
+	// ROW DIV A
+	let subrowdivA = document.createElement("div");
+	subrowdivA.className = "col-md-4";
+	row.appendChild(subrowdivA);
+
+	// ROW DIV A H5
+	let h5ML = document.createElement("h5");
+	h5ML.className = "progress-label";
+    subrowdivA.appendChild(h5ML);
+	
+	let h5ML_small = document.createElement("small");
+	h5ML.appendChild(h5ML_small);
+	h5ML_small.append("Monthly limit");
+	
+	let h5ML_br = document.createElement("br");
+	h5ML.appendChild(h5ML_br);
+	
+	let h5ML_strong = document.createElement("strong");
+	h5ML_strong.style.marginTop = "5px"; 
+	//h5ML_strong.style.backgroundColor = "";
+	h5ML.appendChild(h5ML_strong);
+	h5ML_strong.append(offPeakMonthlylimit + " GB");
+	
+	
+	// ROW DIV B
+	let subrowdivB = document.createElement("div");
+	subrowdivB.className = "col-md-4";
+	subrowdivB.style.textAlign = "center"; 
+	row.appendChild(subrowdivB);
+
+	// ROW DIV B H5
+	let h5Rem = document.createElement("h5");
+	h5Rem.className = "progress-label";
+    subrowdivB.appendChild(h5Rem);
+	
+	let h5Rem_small = document.createElement("small");
+	h5Rem.appendChild(h5Rem_small);
+	h5Rem_small.append("Remaining");
+	
+	let h5Rem_br = document.createElement("br");
+	h5Rem.appendChild(h5Rem_br);
+	
+	let h5Rem_strong = document.createElement("strong");
+	h5Rem.appendChild(h5Rem_strong);
+	h5Rem_strong.append(offPeakRemaining + " GB");
+	
+	
+	// ROW DIV C
+	let subrowdivC = document.createElement("div");
+	subrowdivC.className = "col-md-4";
+	subrowdivC.style.textAlign = "right"; 
+	row.appendChild(subrowdivC);
+
+	// ROW DIV C H5
+	let h5Used = document.createElement("h5");
+	h5Used.className = "progress-label";
+    subrowdivC.appendChild(h5Used);
+	
+	let h5Used_small = document.createElement("small");
+	h5Used.appendChild(h5Used_small);
+	h5Used_small.append("Used");
+	
+	let h5Used_br = document.createElement("br");
+	h5Used.appendChild(h5Used_br);
+	
+	let h5Used_strong = document.createElement("strong");
+	h5Used.appendChild(h5Used_strong);
+	h5Used_strong.append(offPeakUsed + " GB");
+	
+	
+	var referenceNode = document.querySelector('#foreignDOMPogressContainer');
+	referenceNode.after(docFragment);
+	//document.getElementById("foreignDOMPogressContainer").appendChild(docFragment);
+}
+
 
 function funInsertData2Page() {
 
