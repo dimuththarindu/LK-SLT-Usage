@@ -32,7 +32,9 @@ var peakDataExceededWarning = "";
 var offPeakDataExceededWarning = "";
 
 var percentagePeakRem = 0;
+var percentagePeakUsed = 0;
 var percentageOffPeakRem = 0;
+var percentageOffPeakUsed = 0;
 
 totalMonthlylimit = funCircumference('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/div[2]/div[1]/h5/strong/text()'); // 90.0GB 
 totalRemaining = funCircumference('//*[@id="myUsagePanel"]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/div[2]/div[2]/h5/strong/text()'); // 73.3GB
@@ -72,8 +74,10 @@ offPeakDataExceeded = dataExceededFun.val;
 offPeakDataExceededWarning = dataExceededFun.warning;
 
 // Calculate Percentages
-percentagePeakRem = ((peakRemaining/peakMonthlylimit) * 100).toFixed(0);
-percentageOffPeakRem = ((offPeakRemaining/offPeakMonthlylimit) * 100).toFixed(0);
+percentagePeakRem = ((peakRemaining/peakMonthlylimit) * 100).toFixed(0); // Peak Remaining
+percentagePeakUsed = ((peakUsed/peakMonthlylimit) * 100).toFixed(0); // Peak Used
+percentageOffPeakRem = ((offPeakRemaining/offPeakMonthlylimit) * 100).toFixed(0); // Off-Peak Remaining
+percentageOffPeakUsed = ((offPeakUsed/offPeakMonthlylimit) * 100).toFixed(0); // Off-Peak Used
 
 funDebug(); // For debugging pursues
 
@@ -123,7 +127,9 @@ function funDebug() {
 	
 	// Percentages Values
 	console.log("percentagePeakRem: " + percentagePeakRem);
-	console.log("percentageOffPeakRem: " + percentageOffPeakRem);
+	console.log("percentagePeakUsed: " + percentagePeakUsed);
+	console.log("percentageOffPeakRem: " + percentageOffPeakRem);	
+	console.log("percentageOffPeakUsed: " + percentageOffPeakUsed);
 }
 
 function funCircumference(xPathValue) {
@@ -567,7 +573,12 @@ function funInsertData2Page() {
     let tr5_td3 = document.createElement("td");
     tr5_td3.style.padding = "2px 60px 2px 10px";
     tr5.appendChild(tr5_td3);
-    tr5_td3.append("");
+    //tr5_td3.append("");
+	
+	let tr5_td3_span = document.createElement("span");
+    tr5_td3_span.className = "text-muted";
+    tr5_td3.appendChild(tr5_td3_span);
+    tr5_td3_span.append("(" + percentagePeakRem + "%)");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -588,7 +599,12 @@ function funInsertData2Page() {
     let tr6_td3 = document.createElement("td");
     tr6_td3.style.padding = "2px 60px 2px 10px";
     tr6.appendChild(tr6_td3);
-    tr6_td3.append("");
+    //tr6_td3.append("");
+	
+	let tr6_td3_span = document.createElement("span");
+    tr6_td3_span.className = "text-muted";
+    tr6_td3.appendChild(tr6_td3_span);
+    tr6_td3_span.append("(" + percentagePeakUsed + "%)");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -702,7 +718,12 @@ function funInsertData2Page() {
     let tr8_td3 = document.createElement("td");
     tr8_td3.style.padding = "2px 60px 2px 10px";
     tr8.appendChild(tr8_td3);
-    tr8_td3.append("");
+    //tr8_td3.append("");
+	
+	let tr8_td3_span = document.createElement("span");
+    tr8_td3_span.className = "text-muted";
+    tr8_td3.appendChild(tr8_td3_span);
+    tr8_td3_span.append("(" + percentageOffPeakRem + "%)");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -723,7 +744,12 @@ function funInsertData2Page() {
     let tr9_td3 = document.createElement("td");
     tr9_td3.style.padding = "2px 60px 2px 10px";
     tr9.appendChild(tr9_td3);
-    tr9_td3.append("");
+    //tr9_td3.append("");
+	
+	let tr9_td3_span = document.createElement("span");
+    tr9_td3_span.className = "text-muted";
+    tr9_td3.appendChild(tr9_td3_span);
+    tr9_td3_span.append("(" + percentageOffPeakUsed + "%)");
     // ------------------------------------------------------
     tbody.append("\n");
 
