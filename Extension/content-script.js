@@ -214,7 +214,7 @@ function funVolExceed(inputVal, inputAvg) {
 		if (inputVal > noOfComingDays) {
 			inputVal = noOfComingDays;
 		} else {
-			inputWarning = "⚠️";
+			inputWarning = "⚠";
 		}
     } catch (err) {
 		inputVal = 0;
