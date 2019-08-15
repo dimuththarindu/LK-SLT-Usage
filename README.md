@@ -10,6 +10,6 @@ In addition, this extension does not store or send any data. All the functions a
 Firefox Extension: https://addons.mozilla.org/en-US/firefox/addon/lk-slt-usage/  
 Chrome Extension (manual installation required using the zip file): https://github.com/dimuththarindu/LK-SLT-Usage/releases/
 
-Screenshot 01: <a src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Image_01.png">Link</a>
-Screenshot 02: <a src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Image_02.png">Link</a>
+Screenshot 01: <a src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Image_01.png">Link</a>  
+Screenshot 02: <a src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Image_02.png">Link</a>  
 
