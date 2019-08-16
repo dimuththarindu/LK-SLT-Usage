@@ -48,6 +48,10 @@ var percentagePeakUsed = 0;
 var percentageOffPeakRem = 0;
 var percentageOffPeakUsed = 0;
 
+
+// Only clean, secure code are allowed
+"use strict";
+
 // This function has to execute before other functions
 funCalculation();
 
@@ -101,6 +105,7 @@ function funCalculation() {
 	avgOffPeakUsage = Number((offPeakUsed / dayOfTheMonth).toFixed(2)) || 0;
 
 	// Data exceed details + warning
+	let dataExceededFun;
 	dataExceededFun = funVolExceed(totalRemaining, avgUsage);
 	dataExceeded = dataExceededFun.val;
 	dataExceededWarning = dataExceededFun.warning;
@@ -196,7 +201,7 @@ function funDebug() {
 }
 
 function funCircumference(xPathValue) {
-    var x = 0;
+    let x = 0;
     try {
         x = parseFloat((document.evaluate(xPathValue, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).data.toString().replace(/[^\d.]/g, '')) || 0;
     } catch (err) {
@@ -208,7 +213,7 @@ function funCircumference(xPathValue) {
 }
 
 function funVolExceed(inputVal, inputAvg) {
-	var inputWarning = "";
+	let inputWarning = "";
     try { 		
 		inputVal = Number((inputVal / inputAvg).toFixed(0)) || 0;
 		if (inputVal > noOfComingDays) {
@@ -230,13 +235,13 @@ function funVolExceed(inputVal, inputAvg) {
 function funChangeName() {
 	
 	// Standard Volume // Peak Volume
-	var pathPV = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/h4';
-    var elePV = document.evaluate(pathPV, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+	let pathPV = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/h4';
+    let elePV = document.evaluate(pathPV, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     elePV.id = 'foreignDOMPV';
 	
 	//  Total (Standard+Free) Volume // Total Volume
-	var pathTV = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/h4';
-    var eleTV = document.evaluate(pathTV, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+	let pathTV = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/h4';
+    let eleTV = document.evaluate(pathTV, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     eleTV.id = 'foreignDOMTV';
 	
 	document.getElementById("foreignDOMPV").innerHTML = "Peak Volume";
@@ -246,7 +251,7 @@ function funChangeName() {
 
 function funInsertProgressBar() {
 	
-	var path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div';
+	let path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div';
     var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     element.id = 'foreignDOMPogressContainer_Before';
 	
@@ -366,8 +371,8 @@ function funInsertProgressBar() {
 	h5Used.appendChild(h5Used_strong);
 	h5Used_strong.append(offPeakUsed + " GB");
 	
-	
-	var referenceNode = document.querySelector('#foreignDOMPogressContainer_Before');
+	// Final code
+	let referenceNode = document.querySelector('#foreignDOMPogressContainer_Before');
 	referenceNode.after(docFragment);
 	//document.getElementById("foreignDOMPogressContainer_Before").appendChild(docFragment);
 }
@@ -375,7 +380,7 @@ function funInsertProgressBar() {
 
 function funInsertData2Page() {
 
-    var path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[4]';
+    let path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[4]';
     var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     element.id = 'foreignDOMContainer';
 
@@ -1094,22 +1099,22 @@ function funInsertData2Page() {
 
 function funCustomStyle01() {
 
-    var path = '/html/body/div[3]/div/div[2]/div/div';
-    var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    let path = '/html/body/div[3]/div/div[2]/div/div';
+    let element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     element.id = 'div-style-01';
 
-    var element = document.getElementById("div-style-01");
+    element = document.getElementById("div-style-01");
     element.removeAttribute("style")
     //element.classList.remove("mystyle");
 }
 
 function funCustomStyle02() {
 
-    var path = '/html/body/div[3]/div/div[2]';
-    var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    let path = '/html/body/div[3]/div/div[2]';
+    let element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     element.id = 'div-style-02';
 
-    var element = document.getElementById("div-style-02");
+    element = document.getElementById("div-style-02");
     //element.removeAttribute("style")
     element.classList.remove("col-md-8");
     element.classList.add("container");
@@ -1117,30 +1122,30 @@ function funCustomStyle02() {
 
 function funCustomStyle03() {
 
-    var path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div';
-    var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    let path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div';
+    let element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     element.id = 'div-style-03';
 
-    var element = document.getElementById("div-style-03");
+    element = document.getElementById("div-style-03");
     element.style.padding = "40px";
 }
 
 function funCustomStyle04() {
 
-    var path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[5]/div/div/div/h4';
-    var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    let path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[5]/div/div/div/h4';
+    let element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     element.id = 'div-style-04';
 
-    var element = document.getElementById("div-style-04");
+    element = document.getElementById("div-style-04");
     element.style.padding = "1px 10px 5px 10px";
 }
 
 function funCustomStyle05() {
 
-    var path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[6]';
-    var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    let path = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[6]';
+    let element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     element.id = 'div-style-05';
 
-    var element = document.getElementById("div-style-05");
+    element = document.getElementById("div-style-05");
     element.style.padding = "3px";
 }
