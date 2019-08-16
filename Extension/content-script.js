@@ -49,7 +49,7 @@ var percentageOffPeakRem = 0;
 var percentageOffPeakUsed = 0;
 
 
-// Only clean, secure code are allowed
+// Only clean, secure codes are allowed
 "use strict";
 
 // This function has to execute before other functions

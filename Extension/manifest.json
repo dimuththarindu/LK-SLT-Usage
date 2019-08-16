@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "LK SLT Usage",
-	"version": "5.3",
+	"version": "5.4",
 	"description": "Sri Lanka Telecom - Data Usage",
 	"icons": {
 		"16": "icons/border-16.png",
