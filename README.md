@@ -11,5 +11,5 @@ Firefox Extension: https://addons.mozilla.org/en-US/firefox/addon/lk-slt-usage/
 Opera Extension: https://addons.opera.com/en/extensions/details/lk-slt-usage-unofficial/  
 Chrome Extension (manual installation required using the zip file): https://github.com/dimuththarindu/LK-SLT-Usage/releases/
 
-Screenshot 01: <a href="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Image_01.png" target="_blank">Link</a>  
-Screenshot 02: <a href="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Image_02.png" target="_blank">Link</a>  
+Screenshot 01: <a href="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Image_01.png" target="_blank">Link</a>  
+Screenshot 02: <a href="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Image_02.png" target="_blank">Link</a>  
