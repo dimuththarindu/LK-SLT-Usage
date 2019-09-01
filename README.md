@@ -8,7 +8,7 @@ This extension does not require your login credentials or any credentials.
 In addition, this extension does not store or send any data. All the functions are done locally.
 
 Firefox Extension: https://addons.mozilla.org/en-US/firefox/addon/lk-slt-usage/   
-Opera: https://addons.opera.com/en/extensions/details/lk-slt-usage-unofficial/  
+Opera Extension: https://addons.opera.com/en/extensions/details/lk-slt-usage-unofficial/  
 Chrome Extension (manual installation required using the zip file): https://github.com/dimuththarindu/LK-SLT-Usage/releases/
 
 Screenshot 01: <a href="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Image_01.png" target="_blank">Link</a>  
