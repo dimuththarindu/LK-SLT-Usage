@@ -13,5 +13,11 @@ Chrome Extension (manual installation required using the zip file): https://gith
 
 To install this on any browser using a userscript manager, please refer this project: https://github.com/dimuththarindu/UserScripts/tree/master/LK-SLT-Usage  
  
-Screenshot 01: <a href="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Image_01.png" target="_blank">Link</a>  
-Screenshot 02: <a href="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Image_02.png" target="_blank">Link</a>  
+Screenshot 01
+
+<img src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Screenshots/Screenshot_01.png" />
+
+     
+Screenshot 02
+
+<img src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Screenshots/Screenshot_02.png" />
