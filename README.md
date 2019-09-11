@@ -7,22 +7,23 @@ Please note that this extension does not have an interface.
 This extension does not require your login credentials or any other credentials. 
 In addition, this extension does not store or send any data. All the processes are done locally.
 
-**Firefox Extension:** https://addons.mozilla.org/en-US/firefox/addon/lk-slt-usage-unofficial/
-**Opera Extension:** https://addons.opera.com/en/extensions/details/lk-slt-usage-unofficial/  
+**Firefox Extension:** https://addons.mozilla.org/en-US/firefox/addon/lk-slt-usage-unofficial/  
+**Opera Extension:** https://addons.opera.com/en/extensions/details/lk-slt-usage-unofficial/   
 
-Extension [ZIP file]: https://github.com/dimuththarindu/LK-SLT-Usage/raw/master/Extension/Extension.zip
+Extension [ZIP file]: https://github.com/dimuththarindu/LK-SLT-Usage/raw/master/Extension/Extension.zip   
 Zip file can be used to manually install this extension on Chromium browsers such as Google Chrome.
 
-To install this on any browser using a userscript manager, please refer this project: https://github.com/dimuththarindu/UserScripts/tree/master/LK-SLT-Usage
+To install this on any browser using a userscript manager, please refer this project: https://github.com/dimuththarindu/UserScripts/tree/master/LK-SLT-Usage  
 
 Source Code: https://github.com/dimuththarindu/LK-SLT-Usage/archive/master.zip
 
 <hr>  
-Screenshot 01
 
+Screenshot 01     
+      
 <img src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Screenshots/Screenshot_01.png" />
 
      
-Screenshot 02
-
+Screenshot 02   
+      
 <img src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Screenshots/Screenshot_02.png" />
