@@ -19,11 +19,6 @@ Source Code: https://github.com/dimuththarindu/LK-SLT-Usage/archive/master.zip
 
 <hr>  
 
-Screenshot 01     
-      
 <img src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Screenshots/Screenshot_01.png" />
 
-     
-Screenshot 02   
-      
 <img src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Screenshots/Screenshot_02.png" />
