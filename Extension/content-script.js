@@ -1,5 +1,5 @@
 // Name         LK-SLT-Usage
-// Version      6.0.0
+// Version      6.1
 // Author       DT
 // Description  Sri Lanka Telecom - Data Usage
 // Source       https://github.com/dimuththarindu/LK-SLT-Usage
