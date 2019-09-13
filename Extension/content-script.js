@@ -1,15 +1,15 @@
-// Name          LK-SLT-Usage
-// Version       7.0
-// Author        DT
-// Description   Sri Lanka Telecom - Data Usage
-// Source        https://github.com/dimuththarindu/LK-SLT-Usage
-// SupportURL    https://github.com/dimuththarindu/LK-SLT-Usage/issues
-// License       GNU Lesser General Public License v3.0
-// history       7.0.0 Fix minor errors in JS 
-// history       6.0.0 Update the warning sign color
-// history       5.8.0 Change the image and update URL paths
-// history       5.7.5 License
-// history       5.7.4 Change support URL
+// Name         LK-SLT-Usage
+// Version      7.0
+// Author       DT
+// Description  Sri Lanka Telecom - Data Usage
+// Source       https://github.com/dimuththarindu/LK-SLT-Usage
+// SupportURL   https://github.com/dimuththarindu/LK-SLT-Usage/issues
+// License      GNU Lesser General Public License v3.0
+// history      7.0.0 Fix minor errors in JS 
+// history      6.0.0 Update the warning sign color
+// history      5.8.0 Change the image and update URL paths
+// history      5.7.5 License
+// history      5.7.4 Change support URL
 
 
 // Total Volume
