@@ -1,15 +1,15 @@
-// Name         LK-SLT-Usage
-// Version      6.1
-// Author       DT
-// Description  Sri Lanka Telecom - Data Usage
-// Source       https://github.com/dimuththarindu/LK-SLT-Usage
-// SupportURL   https://github.com/dimuththarindu/LK-SLT-Usage/issues
-// License      GNU Lesser General Public License v3.0
-// history      6.0.0 Update the warning sign color
-// history      5.8.0 Change the image and update URL paths
-// history      5.7.5 License
-// history      5.7.4 Change support URL
-// history      5.7.2 Small changes to the script
+// Name          LK-SLT-Usage
+// Version       7.0
+// Author        DT
+// Description   Sri Lanka Telecom - Data Usage
+// Source        https://github.com/dimuththarindu/LK-SLT-Usage
+// SupportURL    https://github.com/dimuththarindu/LK-SLT-Usage/issues
+// License       GNU Lesser General Public License v3.0
+// history       7.0.0 Fix minor errors in JS 
+// history       6.0.0 Update the warning sign color
+// history       5.8.0 Change the image and update URL paths
+// history       5.7.5 License
+// history       5.7.4 Change support URL
 
 
 // Total Volume
@@ -230,11 +230,15 @@ function funDebug() {
 function funCircumference(xPathValue) {
     let x = 0;
     try {
-        x = parseFloat((document.evaluate(xPathValue, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).data.toString().replace(/[^\d.]/g, '')) || 0;
+		// Documentation: https://developer.mozilla.org/en-US/docs/Web/API/Document/evaluate 
+		// Documentation: https://developer.mozilla.org/en-US/docs/Web/API/XPathResult
+		
+        //x = parseFloat((document.evaluate(xPathValue, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).data.toString().replace(/[^\d.]/g, '')) || 0;
+		x = parseFloat(document.evaluate(xPathValue, document, null, XPathResult.STRING_TYPE, null).stringValue.replace(/[^\d.]/g, '')) || 0;
     } catch (err) {
         x = 0;
         console.log("Error: " + err);
-    } finally {}
+    } //finally {}
     return x;
 }
 
@@ -242,7 +246,7 @@ function funVolExceed(inputVal, inputAvg) {
     let inputWarning = "";
     try {
         inputVal = Number((inputVal / inputAvg).toFixed(0)) || 0;
-        if (inputVal > noOfComingDays) {
+        if (inputVal >= noOfComingDays) {
             inputVal = noOfComingDays;
         } else {
             inputWarning = "⚠";
@@ -250,7 +254,7 @@ function funVolExceed(inputVal, inputAvg) {
     } catch (err) {
         inputVal = 0;
         console.log("Error: " + err);
-    } finally {}
+    } //finally {}
     return {
         val: inputVal,
         warning: inputWarning,
