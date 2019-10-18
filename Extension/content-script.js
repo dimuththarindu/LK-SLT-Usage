@@ -1,5 +1,5 @@
 // Name         LK-SLT-Usage
-// Version      9.0
+// Version      9.2
 // Author       DT
 // Description  Sri Lanka Telecom - Data Usage
 // Source       https://github.com/dimuththarindu/LK-SLT-Usage
@@ -124,16 +124,19 @@ window.addEventListener("message", function(event) {
 
 
 function funMain() {
-	// This function has to execute before other functions
-	funCalculation();
+	if(window.location.pathname == "/dashboard")
+	{
+		// This function has to execute before other functions
+		funCalculation();
 
-	// Display the calculate information
-	//funChangeName();
-	//funInsertProgressBar();
-	funInsertData2Page();
+		// Display the calculate information
+		//funChangeName();
+		//funInsertProgressBar();
+		funInsertData2Page();
 
-	// For debugging pursues
-	//funDebug();
+		// For debugging pursues
+		//funDebug();
+	}
 }
 
 function funCalculation() {
