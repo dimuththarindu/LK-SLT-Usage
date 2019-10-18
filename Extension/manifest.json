@@ -1,12 +1,11 @@
 {
 	"name": "LK SLT Usage",
-	"version": "7.0",
+	"version": "9.0",
 	"manifest_version": 2,
 	
 	"description": "Sri Lanka Telecom - Data Usage",
-	"developer": {
-		"name": "DT"
-	},
+	"author": "DT",
+	
 	"icons": {
 		 "16": "images/border-16.png",
 		 "20": "images/border-20.png",
@@ -22,12 +21,15 @@
 		"430": "images/border-430.png"
 	},	
 	
+	"permissions": [
+		"webRequest",
+		"<all_urls>"
+	],
+	
 	"content_scripts": [{
-		"matches": [
-			"*://*.internetvas.slt.lk/SLTVasPortal-war/application/home.nable"
-		],
-		"js": [
-			"content-script.js"
-		]
+		"matches": ["*://*.internetvas.slt.lk/dashboard"],
+		"js": ["content-script.js"],
+		"run_at": "document_start"
+		
 	}]
 }
