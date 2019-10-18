@@ -1,5 +1,5 @@
 // Name         LK-SLT-Usage
-// Version      9.2
+// Version      9.4
 // Author       DT
 // Description  Sri Lanka Telecom - Data Usage
 // Source       https://github.com/dimuththarindu/LK-SLT-Usage
@@ -109,12 +109,15 @@ requestIdleCallback(checkForDOM);
 // Chrome Extension: Reading the BODY of an HTTP response object: End
 
 // Communication with the embedding page
-var port = chrome.runtime.connect();
+// Source: https://developer.chrome.com/extensions/content_scripts#host-page-communication
+var port = browser.runtime.connect();
 
 window.addEventListener("message", function(event) {
     // We only accept messages from ourselves
     if (event.source != window)
-        return;
+	{
+		return;
+	}
 
     if (event.data.type && (event.data.type == "FROM_LK_SLT_USAGE_EXTENSION")) {
         console.log("LK-SLT-Usage: Content script received: " + event.data.text);
