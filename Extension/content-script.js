@@ -1,5 +1,5 @@
 // Name         LK-SLT-Usage
-// Version      10.2
+// Version      10.3
 // Author       DT
 // Description  Sri Lanka Telecom - Data Usage
 // Source       https://github.com/dimuththarindu/LK-SLT-Usage
@@ -1111,7 +1111,7 @@ function funInsertData2Page() {
     let tr901_td1 = document.createElement("td");
     tr901_td1.style.padding = "0px 10px 0px 0px";
     tr901.appendChild(tr901_td1);
-    tr901_td1.append("Off Peak data will be exceeded in ");
+    tr901_td1.append("Off-Peak data will be exceeded in ");
     // ------------------------------------------------------
     let tr901_td2 = document.createElement("td");
 	tr901_td2.style.padding = "0px 10px 0px 0px";
@@ -1306,7 +1306,7 @@ function funInsertData2Page() {
     let tr13_td1 = document.createElement("td");
     tr13_td1.style.padding = "0px 10px 0px 0px";
     tr13.appendChild(tr13_td1);
-    tr13_td1.append("Allocated Off Peak Data Per Day");
+    tr13_td1.append("Allocated Off-Peak Data Per Day");
     // ------------------------------------------------------
     let tr13_td2 = document.createElement("td");
 	tr13_td2.style.padding = "0px 10px 0px 0px";
@@ -1331,7 +1331,7 @@ function funInsertData2Page() {
     let tr14_td1 = document.createElement("td");
     tr14_td1.style.padding = "0px 10px 0px 0px";
     tr14.appendChild(tr14_td1);
-    tr14_td1.append("Available Off Peak Data Per Day");
+    tr14_td1.append("Available Off-Peak Data Per Day");
     // ------------------------------------------------------
     let tr14_td2 = document.createElement("td");
 	tr14_td2.style.padding = "0px 10px 0px 0px";
@@ -1345,7 +1345,7 @@ function funInsertData2Page() {
     //let tr14_td3_span = document.createElement("span");
     //tr14_td3_span.className = "text-muted";
     //tr14_td3.appendChild(tr14_td3_span);
-    //tr14_td3_span.append("(Available Off Peak Data/" + (daysInThisMonth - dayOfTheMonth) + ")");
+    //tr14_td3_span.append("(Available Off-Peak Data/" + (daysInThisMonth - dayOfTheMonth) + ")");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -1356,7 +1356,7 @@ function funInsertData2Page() {
     let tr15_td1 = document.createElement("td");
     tr15_td1.style.padding = "0px 10px 0px 0px";
     tr15.appendChild(tr15_td1);
-    tr15_td1.append("Average Off Peak Data Usage");
+    tr15_td1.append("Average Off-Peak Data Usage");
     // ------------------------------------------------------
     let tr15_td2 = document.createElement("td");
 	tr15_td2.style.padding = "0px 10px 0px 0px";
