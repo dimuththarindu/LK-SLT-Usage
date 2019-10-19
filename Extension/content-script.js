@@ -1,10 +1,11 @@
 // Name         LK-SLT-Usage
-// Version      9.4
+// Version      10.0
 // Author       DT
 // Description  Sri Lanka Telecom - Data Usage
 // Source       https://github.com/dimuththarindu/LK-SLT-Usage
 // SupportURL   https://github.com/dimuththarindu/LK-SLT-Usage/issues
 // License      GNU Lesser General Public License v3.0
+// history      9.5.0 Add Remaining vol to Doughnut Charts
 // history      9.0.0 Updated the script
 // history      8.0.0 Updated the script according to SLT new web page
 // history      7.0.0 Fix minor errors in JS 
@@ -68,49 +69,50 @@ console.log('LK-SLT-Usage: Process has been started');
 
 // Code by Tarun Dugar
 // Source link: https://medium.com/better-programming/chrome-extension-intercepting-and-reading-the-body-of-http-requests-dd9ebdf2348b
-// Chrome Extension: Reading the BODY of an HTTP response object: Start
-function interceptData() {
-    var xhrOverrideScript = document.createElement('script');
-    xhrOverrideScript.type = 'text/javascript';
-    xhrOverrideScript.innerHTML = `
-	(function() {
-    var XHR = XMLHttpRequest.prototype;
-    var send = XHR.send;
-    var open = XHR.open;
-    XHR.open = function(method, url) {
-        this.url = url; // the request url
-        return open.apply(this, arguments);
+// Chrome Extension: Reading the BODY of an HTTP response object: START
+function funInterceptData() {
+	// Check For DOM
+    if (document.body && document.head) 
+	{
+        var xhrOverrideScript = document.createElement('script');
+		xhrOverrideScript.type = 'text/javascript';
+		xhrOverrideScript.innerHTML = `
+		(function() {
+		var XHR = XMLHttpRequest.prototype;
+		var send = XHR.send;
+		var open = XHR.open;
+		XHR.open = function(method, url) {
+			this.url = url; // the request url
+			return open.apply(this, arguments);
+		}
+		XHR.send = function() {
+			this.addEventListener('load', function() {
+				if ((this.url.includes('https://omniscapp.slt.lk/mobitelint/slt/sltvasservices/dashboard/mypackage')) || (this.url.includes('https://omniscapp.slt.lk/mobitelint/slt/sltvasservices/dashboard/summary'))) {
+					console.log('LK-SLT-Usage: Intercept completed');
+					window.postMessage({
+						type: "FROM_LK_SLT_USAGE_EXTENSION",
+						text: "Hello from the webpage!"
+					}, "*");
+				}
+			});
+			return send.apply(this, arguments);
+		};
+		})();`;
+		document.head.prepend(xhrOverrideScript);
+    } 
+	else 
+	{
+        requestIdleCallback(funInterceptData);
     }
-    XHR.send = function() {
-        this.addEventListener('load', function() {
-            if ((this.url.includes('https://omniscapp.slt.lk/mobitelint/slt/sltvasservices/dashboard/mypackage')) || (this.url.includes('https://omniscapp.slt.lk/mobitelint/slt/sltvasservices/dashboard/summary'))) {
-                console.log('LK-SLT-Usage: Intercept completed');
-                window.postMessage({
-                    type: "FROM_LK_SLT_USAGE_EXTENSION",
-                    text: "Hello from the webpage!"
-                }, "*");
-            }
-        });
-        return send.apply(this, arguments);
-    };
-	})();`;
-    document.head.prepend(xhrOverrideScript);
 }
 
-function checkForDOM() {
-    if (document.body && document.head) {
-        interceptData();
-    } else {
-        requestIdleCallback(checkForDOM);
-    }
-}
-
-requestIdleCallback(checkForDOM);
-// Chrome Extension: Reading the BODY of an HTTP response object: End
+requestIdleCallback(funInterceptData);
+// Chrome Extension: Reading the BODY of an HTTP response object: END
 
 // Communication with the embedding page
 // Source: https://developer.chrome.com/extensions/content_scripts#host-page-communication
-var port = browser.runtime.connect();
+// Communication with the embedding page: START
+var port = chrome.runtime.connect();
 
 window.addEventListener("message", function(event) {
     // We only accept messages from ourselves
@@ -124,7 +126,7 @@ window.addEventListener("message", function(event) {
         funMain();
     }
 }, false);
-
+// Communication with the embedding page: END
 
 function funMain() {
 	if(window.location.pathname == "/dashboard")
@@ -132,13 +134,14 @@ function funMain() {
 		// This function has to execute before other functions
 		funCalculation();
 
-		// Display the calculate information
-		//funChangeName();
-		//funInsertProgressBar();
-		funInsertData2Page();
-
-		// For debugging pursues
-		//funDebug();
+		funInsertRemaining2DoughnutChart();
+		
+		funInsertOffPeakDoughnutChart();
+		funInsertExtraDoughnutChart();
+		funInsertData2Page();	
+		
+		funChangeName();
+		//funDebug(); // For debugging pursues
 	}
 }
 
@@ -326,12 +329,12 @@ function funVolExceed(inputVal, inputAvg) {
 function funChangeName() {
 
     // Standard Volume // Peak Volume
-    let pathPV = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/h4';
+    let pathPV = '/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/h6';
     let elePV = document.evaluate(pathPV, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     elePV.id = 'foreignDOMPV';
 
     //  Total (Standard+Free) Volume // Total Volume
-    let pathTV = '/html/body/div[3]/div/div[2]/div/div/div/form/div/div[1]/div/div[1]/div[1]/div[2]/div[1]/div[1]/div/h4';
+    let pathTV = '/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div[1]/div/div[2]/div/div/h6';
     let eleTV = document.evaluate(pathTV, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     eleTV.id = 'foreignDOMTV';
 
@@ -339,129 +342,312 @@ function funChangeName() {
     document.getElementById("foreignDOMTV").innerHTML = "Total Volume";
 }
 
-function funInsertProgressBar() {
+function funInsertRemaining2DoughnutChart() {
+	funRemDoughnutChart_Standard();
+	funRemDoughnutChart_Total();
+}
 
-    let path = '/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[2]';
-    var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-    element.id = 'foreignDOMPogressContainer_Before';
+function funRemDoughnutChart_Standard() {
+	let path = '/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/div[2]';
+	var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+	element.id = 'DoughnutChart_Standard';
 
-    var docFragment = document.createDocumentFragment();
-    // contains all gathered nodes
+	var docFragment = document.createDocumentFragment();
 
-    let lineBreak = document.createElement("p");
-    docFragment.appendChild(lineBreak);
-    lineBreak.append(" ");
+	let remaining = document.createElement("span");
+	remaining.style.position = "relative";
+	remaining.style.top = "-110px";
+	remaining.style.display = "flex";
+	remaining.style.justifyContent = "center";
+	remaining.style.alignItems = "center";
+	remaining.style.color = "rgb(37, 151, 216)";
+	remaining.style.fontWeight = "700";
+	remaining.style.fontSize = "14px";
+	remaining.style.fontFamily = "Open Sans";
+	remaining.append(peakRemaining + " GB");
+	docFragment.appendChild(remaining);
+	docFragment.append("\n");
 
-    let maindiv = document.createElement("div");
-    maindiv.className = "col-md-12";
-    docFragment.appendChild(maindiv);
+	let referenceNode = document.querySelector('#DoughnutChart_Standard');
+	referenceNode.after(docFragment);
+}
 
-    let maindivh4 = document.createElement("h4");
-    maindiv.appendChild(maindivh4);
-    maindivh4.append("Off-Peak Volume");
-    maindiv.append("\n");
+function funRemDoughnutChart_Total() {
+	let path = '/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div[1]/div/div[2]/div/div/div[2]';
+	var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+	element.id = 'DoughnutChart_Total';
 
-    let ProgressDiv = document.createElement("div");
-    ProgressDiv.className = "progress";
-    maindiv.appendChild(ProgressDiv);
-    maindiv.append("\n");
+	var docFragment = document.createDocumentFragment();
 
-    let ProgressBarDivA = document.createElement("div");
-    ProgressBarDivA.className = "progress-bar";
-    ProgressBarDivA.setAttribute("role", "progressbar");
-    ProgressBarDivA.setAttribute("aria-valuenow", "50");
-    ProgressBarDivA.setAttribute("aria-valuemin", "0");
-    ProgressBarDivA.setAttribute("aria-valuemax", "100");
-    ProgressBarDivA.style.width = percentageOffPeakRem + "%";
-    ProgressBarDivA.style.backgroundColor = "#0d0548";
-    ProgressDiv.appendChild(ProgressBarDivA);
-    ProgressBarDivA.append(percentageOffPeakRem + "%");
-    maindiv.append("\n");
+	let remaining = document.createElement("span");
+	remaining.style.position = "relative";
+	remaining.style.top = "-110px";
+	remaining.style.display = "flex";
+	remaining.style.justifyContent = "center";
+	remaining.style.alignItems = "center";
+	remaining.style.color = "rgb(37, 151, 216)";
+	remaining.style.fontWeight = "700";
+	remaining.style.fontSize = "14px";
+	remaining.style.fontFamily = "Open Sans";
+	remaining.append(totalRemaining + " GB");
+	docFragment.appendChild(remaining);
+	docFragment.append("\n");
 
-    let ProgressBarDivB = document.createElement("div");
-    ProgressBarDivB.className = "progress-bar";
-    ProgressBarDivB.setAttribute("role", "progressbar");
-    ProgressBarDivB.style.backgroundColor = "#87C7DE";
-    ProgressBarDivB.style.width = "0%";
-    ProgressDiv.appendChild(ProgressBarDivB);
-    maindiv.append("\n");
+	let referenceNode = document.querySelector('#DoughnutChart_Total');
+	referenceNode.after(docFragment);
+}
 
-    let row = document.createElement("div");
-    row.className = "row";
-    maindiv.appendChild(row);
-    maindiv.append("\n");
+function funInsertOffPeakDoughnutChart() {
+	let path = '/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div[1]/div';
+	var element = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+	element.id = 'foreignDOMPogressContainer';
 
-    // ROW DIV A
-    let subrowdivA = document.createElement("div");
-    subrowdivA.className = "col-md-4";
-    row.appendChild(subrowdivA);
+	var docFragment = document.createDocumentFragment();
+	// contains all gathered nodes
 
-    // ROW DIV A H5
-    let h5ML = document.createElement("h5");
-    h5ML.className = "progress-label";
-    subrowdivA.appendChild(h5ML);
+	let maindiv = document.createElement("div");
+	maindiv.className = "col-lg-6 col-md-12";
+	docFragment.appendChild(maindiv);
 
-    let h5ML_small = document.createElement("small");
-    h5ML.appendChild(h5ML_small);
-    h5ML_small.append("Monthly limit");
+	let subdiv = document.createElement("div");
+	subdiv.className = "sc-TOsTZ juUyeK";
+	maindiv.appendChild(subdiv);
 
-    let h5ML_br = document.createElement("br");
-    h5ML.appendChild(h5ML_br);
+	let ssubdiv = document.createElement("div");
+	ssubdiv.style.textAlign = "center";
+	ssubdiv.style.marginBottom = "0px";
+	ssubdiv.style.marginTop = "30px";
+	subdiv.appendChild(ssubdiv);
 
-    let h5ML_strong = document.createElement("strong");
-    h5ML_strong.style.marginTop = "5px";
-    //h5ML_strong.style.backgroundColor = "";
-    h5ML.appendChild(h5ML_strong);
-    h5ML_strong.append(offPeakMonthlylimit + " GB");
+	let h6 = document.createElement("h6");
+	h6.className = "sc-dnqmqq hZAKPK";
+	ssubdiv.appendChild(h6);
+	h6.append("Off-Peak Volume");
+	ssubdiv.append("\n");
 
-    // ROW DIV B
-    let subrowdivB = document.createElement("div");
-    subrowdivB.className = "col-md-4";
-    subrowdivB.style.textAlign = "center";
-    row.appendChild(subrowdivB);
+	let ssubdivA = document.createElement("div");
+	ssubdivA.style.marginTop = "10px";
+	ssubdiv.appendChild(ssubdivA);
 
-    // ROW DIV B H5
-    let h5Rem = document.createElement("h5");
-    h5Rem.className = "progress-label";
-    subrowdivB.appendChild(h5Rem);
+	let ssubdivB = document.createElement("div");
+	ssubdivB.style.position = "relative";
+	ssubdiv.appendChild(ssubdivB);
 
-    let h5Rem_small = document.createElement("small");
-    h5Rem.appendChild(h5Rem_small);
-    h5Rem_small.append("Remaining");
+	let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+	svg.setAttribute("width", "180"); //svg.setAttribute("width", "180");
+	svg.setAttribute("height", "180"); //svg.setAttribute("height", "180");
+	svg.setAttribute("viewBox", "-25 -25 400 400");
+	ssubdivB.appendChild(svg);
 
-    let h5Rem_br = document.createElement("br");
-    h5Rem.appendChild(h5Rem_br);
+	let circleA = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+	circleA.setAttribute("stroke", "rgba(20,128,225,0.2)");
+	circleA.setAttribute("cx", "175");
+	circleA.setAttribute("cy", "175");
+	circleA.setAttribute("r", "175");
+	circleA.setAttribute("stroke-width", "40");
+	circleA.setAttribute("fill", "none");
+	svg.appendChild(circleA);
 
-    let h5Rem_strong = document.createElement("strong");
-    h5Rem.appendChild(h5Rem_strong);
-    h5Rem_strong.append(offPeakRemaining + " GB");
+	let circleB = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+	circleB.setAttribute("stroke", "#1480FF");
+	circleB.setAttribute("transform", "rotate(-90 175 175)");
+	circleB.setAttribute("cx", "175");
+	circleB.setAttribute("cy", "175");
+	circleB.setAttribute("r", "175");
+	circleB.setAttribute("stroke-dasharray", "1100");
+	circleB.setAttribute("stroke-width", "40");
+	circleB.setAttribute("stroke-dashoffset", "1100");
+	circleB.setAttribute("stroke-linecap", "butt");
+	circleB.setAttribute("fill", "none");
+	circleB.style.strokeDashoffset  = (1100/100 * (100 - percentageOffPeakRem)) + "px";
+	circleB.style.transition  = "stroke-dashoffset 1s ease-out 0s";
+	svg.appendChild(circleB);
 
-    // ROW DIV C
-    let subrowdivC = document.createElement("div");
-    subrowdivC.className = "col-md-4";
-    subrowdivC.style.textAlign = "right";
-    row.appendChild(subrowdivC);
+	//let text = document.createElement("text");
+	let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+	text.style.font = "700 3.5rem Open Sans";
+	text.setAttribute("fill", "#1480FF");
+	text.setAttribute("x", "50%");
+	text.setAttribute("y", "46%");
+	text.setAttribute("dx", "-25");
+	text.setAttribute("text-anchor", "middle");
+	svg.appendChild(text);
+	text.append(percentageOffPeakRem);
 
-    // ROW DIV C H5
-    let h5Used = document.createElement("h5");
-    h5Used.className = "progress-label";
-    subrowdivC.appendChild(h5Used);
+	//let tspan = document.createElement("tspan");
+	let tspan = document.createElementNS("http://www.w3.org/2000/svg","tspan");
+	tspan.setAttribute("dx", "10");
+	text.appendChild(tspan);
+	tspan.append("%");
 
-    let h5Used_small = document.createElement("small");
-    h5Used.appendChild(h5Used_small);
-    h5Used_small.append("Used");
+	let ssubdivB_p = document.createElement("p");
+	ssubdivB_p.style.position = "relative";
+	ssubdivB_p.style.top = "-100px";
+	ssubdivB_p.style.display = "flex";
+	ssubdivB_p.style.justifyContent  = "center";
+	ssubdivB_p.style.alignItems = "center";
+	ssubdivB_p.style.color = "rgb(20, 128, 255)";
+	ssubdivB_p.style.fontWeight = "700";
+	ssubdivB_p.style.fontSize = "14px";
+	ssubdivB_p.style.fontFamily = "Open Sans";
+	ssubdivB.appendChild(ssubdivB_p);
+	ssubdivB_p.append("Remaining");
 
-    let h5Used_br = document.createElement("br");
-    h5Used.appendChild(h5Used_br);
+	let ssubdiv_span = document.createElement("span");
+	ssubdiv_span.style.position = "relative";
+	ssubdiv_span.style.top = "-100px";
+	ssubdiv_span.style.display = "flex";
+	ssubdiv_span.style.justifyContent  = "center";
+	ssubdiv_span.style.alignItems = "center";
+	ssubdiv_span.style.color = "rgb(20, 128, 255)";
+	ssubdiv_span.style.fontWeight = "700";
+	ssubdiv_span.style.fontSize = "14px";
+	ssubdiv_span.style.fontFamily = "Open Sans";
+	ssubdiv.appendChild(ssubdiv_span);
+	ssubdiv_span.append(offPeakRemaining + " GB");
 
-    let h5Used_strong = document.createElement("strong");
-    h5Used.appendChild(h5Used_strong);
-    h5Used_strong.append(offPeakUsed + " GB");
+	let ssubdivC = document.createElement("div");
+	ssubdivC.style.marginTop  = "-40px";
+	ssubdiv.appendChild(ssubdivC);
 
-    // Final code
-    let referenceNode = document.querySelector('#foreignDOMPogressContainer_Before');
-    referenceNode.after(docFragment);
-    //document.getElementById("foreignDOMPogressContainer_Before").appendChild(docFragment);
+	let ssubdivC_h6 = document.createElement("h6");
+	ssubdivC_h6.className = "sc-dnqmqq jZsdgY";
+	ssubdivC.appendChild(ssubdivC_h6);
+	ssubdivC_h6.append(offPeakUsed + "GB Used of " + offPeakMonthlylimit + "GB");
+
+	// Final code
+	let referenceNode = document.querySelector('#foreignDOMPogressContainer');
+	referenceNode.appendChild(docFragment);
+	//document.getElementById("foreignDOMPogressContainer_Before").appendChild(docFragment);
+}
+
+function funInsertExtraDoughnutChart() {
+	var extraUsed = funCircumference('//*[@id="root"]/div/div/div[3]/div/div/div/div[3]/div[1]/div/div/div[5]/div/h2[2]/text()', 0);
+	var extraMonthlylimit = funCircumference('//*[@id="root"]/div/div/div[3]/div/div/div/div[3]/div[1]/div/div/div[5]/div/h2[2]/text()', 10);
+
+	extraUsed = isNaN(extraUsed) ? 0 : extraUsed;
+	extraMonthlylimit = isNaN(extraMonthlylimit) ? 0 : extraMonthlylimit;
+
+	var extraRemaining = (extraMonthlylimit - extraUsed) < 0 ? 0 : (extraMonthlylimit - extraUsed);
+	var percentageExtraUsed = (((extraUsed / extraMonthlylimit) * 100).toFixed(0)) > 100 ? 100 : (((extraUsed / extraMonthlylimit) * 100).toFixed(0));
+
+	var docFragment = document.createDocumentFragment();
+	// contains all gathered nodes
+
+	let maindiv = document.createElement("div");
+	maindiv.className = "col-lg-6 col-md-12";
+	docFragment.appendChild(maindiv);
+
+	let subdiv = document.createElement("div");
+	subdiv.className = "sc-TOsTZ juUyeK";
+	maindiv.appendChild(subdiv);
+
+	let ssubdiv = document.createElement("div");
+	ssubdiv.style.textAlign = "center";
+	ssubdiv.style.marginBottom = "0px";
+	ssubdiv.style.marginTop = "30px";
+	subdiv.appendChild(ssubdiv);
+
+	let h6 = document.createElement("h6");
+	h6.className = "sc-dnqmqq hZAKPK";
+	ssubdiv.appendChild(h6);
+	h6.append("Extra GB Volume");
+	ssubdiv.append("\n");
+
+	let ssubdivA = document.createElement("div");
+	ssubdivA.style.marginTop = "10px";
+	ssubdiv.appendChild(ssubdivA);
+
+	let ssubdivB = document.createElement("div");
+	ssubdivB.style.position = "relative";
+	ssubdiv.appendChild(ssubdivB);
+
+	let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+	svg.setAttribute("width", "180"); //svg.setAttribute("width", "180");
+	svg.setAttribute("height", "180"); //svg.setAttribute("height", "180");
+	svg.setAttribute("viewBox", "-25 -25 400 400");
+	ssubdivB.appendChild(svg);
+
+	let circleA = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+	circleA.setAttribute("stroke", "rgba(20,128,225,0.2)");
+	circleA.setAttribute("cx", "175");
+	circleA.setAttribute("cy", "175");
+	circleA.setAttribute("r", "175");
+	circleA.setAttribute("stroke-width", "40");
+	circleA.setAttribute("fill", "none");
+	svg.appendChild(circleA);
+
+	let circleB = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+	circleB.setAttribute("stroke", "#1480FF");
+	circleB.setAttribute("transform", "rotate(-90 175 175)");
+	circleB.setAttribute("cx", "175");
+	circleB.setAttribute("cy", "175");
+	circleB.setAttribute("r", "175");
+	circleB.setAttribute("stroke-dasharray", "1100");
+	circleB.setAttribute("stroke-width", "40");
+	circleB.setAttribute("stroke-dashoffset", "1100");
+	circleB.setAttribute("stroke-linecap", "butt");
+	circleB.setAttribute("fill", "none");
+	circleB.style.strokeDashoffset  = (1100/100 * (percentageExtraUsed)) + "px";
+	circleB.style.transition  = "stroke-dashoffset 1s ease-out 0s";
+	svg.appendChild(circleB);
+
+	//let text = document.createElement("text");
+	let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+	text.style.font = "700 3.5rem Open Sans";
+	text.setAttribute("fill", "#1480FF");
+	text.setAttribute("x", "50%");
+	text.setAttribute("y", "46%");
+	text.setAttribute("dx", "-25");
+	text.setAttribute("text-anchor", "middle");
+	svg.appendChild(text);
+	text.append(percentageExtraUsed);
+
+	//let tspan = document.createElement("tspan");
+	let tspan = document.createElementNS("http://www.w3.org/2000/svg","tspan");
+	tspan.setAttribute("dx", "10");
+	text.appendChild(tspan);
+	tspan.append("%");
+
+	let ssubdivB_p = document.createElement("p");
+	ssubdivB_p.style.position = "relative";
+	ssubdivB_p.style.top = "-100px";
+	ssubdivB_p.style.display = "flex";
+	ssubdivB_p.style.justifyContent  = "center";
+	ssubdivB_p.style.alignItems = "center";
+	ssubdivB_p.style.color = "rgb(20, 128, 255)";
+	ssubdivB_p.style.fontWeight = "700";
+	ssubdivB_p.style.fontSize = "14px";
+	ssubdivB_p.style.fontFamily = "Open Sans";
+	ssubdivB.appendChild(ssubdivB_p);
+	ssubdivB_p.append("Remaining");
+
+	let ssubdiv_span = document.createElement("span");
+	ssubdiv_span.style.position = "relative";
+	ssubdiv_span.style.top = "-100px";
+	ssubdiv_span.style.display = "flex";
+	ssubdiv_span.style.justifyContent  = "center";
+	ssubdiv_span.style.alignItems = "center";
+	ssubdiv_span.style.color = "rgb(20, 128, 255)";
+	ssubdiv_span.style.fontWeight = "700";
+	ssubdiv_span.style.fontSize = "14px";
+	ssubdiv_span.style.fontFamily = "Open Sans";
+	ssubdiv.appendChild(ssubdiv_span);
+	ssubdiv_span.append(extraRemaining + " GB");
+
+	let ssubdivC = document.createElement("div");
+	ssubdivC.style.marginTop  = "-40px";
+	ssubdiv.appendChild(ssubdivC);
+
+	let ssubdivC_h6 = document.createElement("h6");
+	ssubdivC_h6.className = "sc-dnqmqq jZsdgY";
+	ssubdivC.appendChild(ssubdivC_h6);
+	ssubdivC_h6.append(extraUsed + "GB Used of " + extraMonthlylimit + "GB");
+
+	// Final code
+	let referenceNode = document.querySelector('#foreignDOMPogressContainer');
+	referenceNode.appendChild(docFragment);
+	//document.getElementById("foreignDOMPogressContainer_Before").appendChild(docFragment);
 }
 
 function funInsertData2Page() {
@@ -828,7 +1014,7 @@ function funInsertData2Page() {
     trhead3.appendChild(trhead3_td1);
     let trhead3_td1_strong = document.createElement("strong");
     trhead3_td1.appendChild(trhead3_td1_strong);
-    trhead3_td1_strong.append("Total Off Peak Volume");
+    trhead3_td1_strong.append("Total Off-Peak Volume");
 
     // ------------------------------------------------------
     //let trhead3_td2 = document.createElement("td");
@@ -850,7 +1036,7 @@ function funInsertData2Page() {
     let tr7_td1 = document.createElement("td");
     tr7_td1.style.padding = "0px 10px 0px 0px";
     tr7.appendChild(tr7_td1);
-    tr7_td1.append("Total Off Peak Monthly Limit");
+    tr7_td1.append("Total Off-Peak Monthly Limit");
     // ------------------------------------------------------
     let tr7_td2 = document.createElement("td");
 	tr7_td2.style.padding = "0px 10px 0px 0px";
@@ -871,7 +1057,7 @@ function funInsertData2Page() {
     let tr8_td1 = document.createElement("td");
     tr8_td1.style.padding = "0px 10px 0px 0px";
     tr8.appendChild(tr8_td1);
-    tr8_td1.append("Total Off Peak Remaining");
+    tr8_td1.append("Total Off-Peak Remaining");
     // ------------------------------------------------------
     let tr8_td2 = document.createElement("td");
 	tr8_td2.style.padding = "0px 10px 0px 0px";
@@ -897,7 +1083,7 @@ function funInsertData2Page() {
     let tr9_td1 = document.createElement("td");
     tr9_td1.style.padding = "0px 10px 0px 0px";
     tr9.appendChild(tr9_td1);
-    tr9_td1.append("Total Off Peak Used");
+    tr9_td1.append("Total Off-Peak Used");
     // ------------------------------------------------------
     let tr9_td2 = document.createElement("td");
 	tr9_td2.style.padding = "0px 10px 0px 0px";
@@ -1096,7 +1282,7 @@ function funInsertData2Page() {
     trhead5.appendChild(trhead5_td1);	
     let trhead5_td1_strong = document.createElement("strong");
     trhead5_td1.appendChild(trhead5_td1_strong);
-    trhead5_td1_strong.append("Total Off Peak Volume: Per day");
+    trhead5_td1_strong.append("Total Off-Peak Volume: Per day");
 
     // ------------------------------------------------------
     //let trhead5_td2 = document.createElement("td");
@@ -1132,7 +1318,7 @@ function funInsertData2Page() {
     //let tr13_td3_span = document.createElement("span");
     //tr13_td3_span.className = "text-muted";
     //tr13_td3.appendChild(tr13_td3_span);
-    //tr13_td3_span.append("(Total Off Peak Used Data/" + daysInThisMonth + ")");
+    //tr13_td3_span.append("(Total Off-Peak Used Data/" + daysInThisMonth + ")");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -1182,7 +1368,7 @@ function funInsertData2Page() {
     //let tr15_td3_span = document.createElement("span");
     //tr15_td3_span.className = "text-muted";
     //tr15_td3.appendChild(tr15_td3_span);
-    //tr15_td3_span.append("(Total Off Peak Used Data/" + dayOfTheMonth + ")");
+    //tr15_td3_span.append("(Total Off-Peak Used Data/" + dayOfTheMonth + ")");
     // ------------------------------------------------------
     table.append("\n");
 
