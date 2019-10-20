@@ -1,5 +1,5 @@
 // Name         LK-SLT-Usage
-// Version      10.3
+// Version      10.4
 // Author       DT
 // Description  Sri Lanka Telecom - Data Usage
 // Source       https://github.com/dimuththarindu/LK-SLT-Usage
@@ -67,6 +67,31 @@ var percentageOffPeakUsed = 0;
 
 console.log('LK-SLT-Usage: Process has been started');
 
+/* // Starting function for UserScripts
+// Fun: UserScript: START
+(function() {
+    var origOpen = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function() {
+        //console.log('request started!');
+        this.addEventListener('load', function() {
+            //console.log('request completed!');
+            //console.log(this.readyState); 
+            //console.log(this.responseText); 
+			//console.log(this.responseURL); 
+			
+			if( (this.responseURL == "https://omniscapp.slt.lk/mobitelint/slt/sltvasservices/dashboard/mypackage")
+				|| (this.responseURL == "https://omniscapp.slt.lk/mobitelint/slt/sltvasservices/dashboard/summary") )
+			{
+				funMain();
+			}
+        });
+        origOpen.apply(this, arguments);
+    };
+})();
+// Fun: UserScript: END */
+
+// Starting functions for the extension
+// Fun: Extension: START
 // Code by Tarun Dugar
 // Source link: https://medium.com/better-programming/chrome-extension-intercepting-and-reading-the-body-of-http-requests-dd9ebdf2348b
 // Chrome Extension: Reading the BODY of an HTTP response object: START
@@ -127,6 +152,7 @@ window.addEventListener("message", function(event) {
     }
 }, false);
 // Communication with the embedding page: END
+// Fun: Extension: END
 
 function funMain() {
 	if(window.location.pathname == "/dashboard")
@@ -149,16 +175,16 @@ function funCalculation() {
 	// Get data from the page
 	
 	// Total: Volume // 90.0GB 
-	totalMonthlylimit = funCircumference('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div/div/div[2]/div/div/div[3]/h6/text()', 10);
+	totalMonthlylimit = funGetNum('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div/div/div[2]/div/div/div[3]/h6/text()', 10, 2);
 	// Total: Used Volume // 16.7GB
-	totalUsed = funCircumference('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div/div/div[2]/div/div/div[3]/h6/text()', 0);
+	totalUsed = funGetNum('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div/div/div[2]/div/div/div[3]/h6/text()', 0, 2);
     // Total: Remaining Volume // 73.3GB
 	totalRemaining = (totalMonthlylimit - totalUsed).toFixed(2);
 	
 	// Peak: Volume // 36.0GB
-	peakMonthlylimit = funCircumference('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div/div/div[1]/div/div/div[3]/h6/text()', 10);
+	peakMonthlylimit = funGetNum('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div/div/div[1]/div/div/div[3]/h6/text()', 10, 2);
     // Peak: Used Volume // 09.4GB
-	peakUsed = funCircumference('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div/div/div[1]/div/div/div[3]/h6/text()', 0);
+	peakUsed = funGetNum('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div/div/div[1]/div/div/div[3]/h6/text()', 0, 2);
     // Peak: Remaining Volume // 26.6GB
 	peakRemaining = (peakMonthlylimit - peakUsed).toFixed(2);
 
@@ -292,18 +318,22 @@ function funDebug() {
     console.log("percentageOffPeakUsed: " + percentageOffPeakUsed);
 }
 
-function funCircumference(xPathValue, sStrValue) {
+function funGetNum(xPathValue, startIndex = 0, roundTo = 2) {
     let x = 0;
     try {
 		// Documentation: https://developer.mozilla.org/en-US/docs/Web/API/Document/evaluate 
 		// Documentation: https://developer.mozilla.org/en-US/docs/Web/API/XPathResult
+		// Documentation: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/default_parameters
+		// Documentation: https://stackoverflow.com/q/11832914 //x = Math.round(x * 100) / 100;
 		
-        //x = parseFloat((document.evaluate(xPathValue, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).data.toString().replace(/[^\d.]/g, '')) || 0;
-		x = parseFloat(document.evaluate(xPathValue, document, null, XPathResult.STRING_TYPE, null).stringValue.substring(sStrValue).replace(/[^\d.]/g, '')).toFixed(2) || 0;
+		x = parseFloat(document.evaluate(xPathValue, document, null, XPathResult.STRING_TYPE, null).stringValue.substring(startIndex).replace(/[^\d.]/g, ''));
+		x = isNaN(x) ? 0 : x;		
+		x = parseFloat(x.toFixed(roundTo)); // string = int.toFixed(x)
+		
     } catch (err) {
         x = 0;
-        console.log("Error: " + err);
-    } //finally {}
+        console.log("LK-SLT-Usage: Error: " + err);
+    }
     return x;
 }
 
@@ -522,11 +552,8 @@ function funInsertOffPeakDoughnutChart() {
 }
 
 function funInsertExtraDoughnutChart() {
-	var extraUsed = funCircumference('//*[@id="root"]/div/div/div[3]/div/div/div/div[3]/div[1]/div/div/div[5]/div/h2[2]/text()', 0);
-	var extraMonthlylimit = funCircumference('//*[@id="root"]/div/div/div[3]/div/div/div/div[3]/div[1]/div/div/div[5]/div/h2[2]/text()', 10);
-
-	extraUsed = isNaN(extraUsed) ? 0 : extraUsed;
-	extraMonthlylimit = isNaN(extraMonthlylimit) ? 0 : extraMonthlylimit;
+	var extraUsed = funGetNum('//*[@id="root"]/div/div/div[3]/div/div/div/div[3]/div[1]/div/div/div[5]/div/h2[2]/text()', 0, 1);
+	var extraMonthlylimit = funGetNum('//*[@id="root"]/div/div/div[3]/div/div/div/div[3]/div[1]/div/div/div[5]/div/h2[2]/text()', 10, 1);
 
 	var extraRemaining = (extraMonthlylimit - extraUsed) < 0 ? 0 : (extraMonthlylimit - extraUsed);
 	
