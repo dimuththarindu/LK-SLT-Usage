@@ -1,10 +1,11 @@
 // Name         LK-SLT-Usage
-// Version      10.4
+// Version      11.1
 // Author       DT
 // Description  Sri Lanka Telecom - Data Usage
 // Source       https://github.com/dimuththarindu/LK-SLT-Usage
 // SupportURL   https://github.com/dimuththarindu/LK-SLT-Usage/issues
 // License      GNU Lesser General Public License v3.0
+// history      10.0.0 Added the mode selection (browser vs userscript)
 // history      9.5.0 Add Remaining vol to Doughnut Charts
 // history      9.0.0 Updated the script
 // history      8.0.0 Updated the script according to SLT new web page
@@ -67,18 +68,50 @@ var percentageOffPeakUsed = 0;
 
 console.log('LK-SLT-Usage: Process has been started');
 
-/* // Starting function for UserScripts
-// Fun: UserScript: START
-(function() {
+// ----------------------------------------------------------------------------------------------------
+// ----------------------------------- Fun: Select the Mode: START ------------------------------------
+// ----------------------------------------------------------------------------------------------------
+funSelectMode();
+
+function funSelectMode()
+{
+	// Source Code: https://stackoverflow.com/a/27494812
+	var scriptEngine;
+
+	if (typeof GM_info === "undefined") {
+		// See https://stackoverflow.com/a/2401861/331508 for optional browser sniffing code.
+		scriptEngine = "a browser";
+
+		funStartMode_Extension();
+	}
+	else {
+		scriptEngine = GM_info.scriptHandler || "Greasemonkey";
+		funStartMode_UserScript();
+	}
+	console.log ('LK-SLT-Usage: This script is running on ' + scriptEngine + '.');
+}
+// ----------------------------------------------------------------------------------------------------
+// ------------------------------------ Fun: Select the Mode: END -------------------------------------
+// ----------------------------------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------------------------------
+// -------------------------------------- Fun: UserScript: START --------------------------------------
+// ----------------------------------------------------------------------------------------------------
+// Starting function for UserScripts
+function funStartMode_UserScript(){
+	funInterceptAJAX();
+}
+
+function funInterceptAJAX() {
     var origOpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function() {
         //console.log('request started!');
         this.addEventListener('load', function() {
             //console.log('request completed!');
-            //console.log(this.readyState); 
-            //console.log(this.responseText); 
-			//console.log(this.responseURL); 
-			
+            //console.log(this.readyState);
+            //console.log(this.responseText);
+			//console.log(this.responseURL);
+
 			if( (this.responseURL == "https://omniscapp.slt.lk/mobitelint/slt/sltvasservices/dashboard/mypackage")
 				|| (this.responseURL == "https://omniscapp.slt.lk/mobitelint/slt/sltvasservices/dashboard/summary") )
 			{
@@ -87,17 +120,26 @@ console.log('LK-SLT-Usage: Process has been started');
         });
         origOpen.apply(this, arguments);
     };
-})();
-// Fun: UserScript: END */
+}
+// ----------------------------------------------------------------------------------------------------
+// --------------------------------------- Fun: UserScript: END ---------------------------------------
+// ----------------------------------------------------------------------------------------------------
 
-// Starting functions for the extension
-// Fun: Extension: START
+// ----------------------------------------------------------------------------------------------------
+// -------------------------------------- Fun: Extension: START ---------------------------------------
+// ----------------------------------------------------------------------------------------------------
+// Starting function for Extension
+function funStartMode_Extension(){
+	requestIdleCallback(funInterceptData);
+	funReceiveMessages();
+}
+
 // Code by Tarun Dugar
 // Source link: https://medium.com/better-programming/chrome-extension-intercepting-and-reading-the-body-of-http-requests-dd9ebdf2348b
-// Chrome Extension: Reading the BODY of an HTTP response object: START
+// Extension: Reading the BODY of an HTTP response object: START
 function funInterceptData() {
 	// Check For DOM
-    if (document.body && document.head) 
+    if (document.body && document.head)
 	{
         var xhrOverrideScript = document.createElement('script');
 		xhrOverrideScript.type = 'text/javascript';
@@ -124,35 +166,39 @@ function funInterceptData() {
 		};
 		})();`;
 		document.head.prepend(xhrOverrideScript);
-    } 
-	else 
+    }
+	else
 	{
         requestIdleCallback(funInterceptData);
     }
 }
+//requestIdleCallback(funInterceptData);
+// Extension: Reading the BODY of an HTTP response object: END
 
-requestIdleCallback(funInterceptData);
-// Chrome Extension: Reading the BODY of an HTTP response object: END
+function funReceiveMessages() {
+	// Communication with the embedding page
+	// Source: https://developer.chrome.com/extensions/content_scripts#host-page-communication
+	// Communication with the embedding page: START
+	var port = chrome.runtime.connect(); // browser.runtime.connect() does not work on chrome.
 
-// Communication with the embedding page
-// Source: https://developer.chrome.com/extensions/content_scripts#host-page-communication
-// Communication with the embedding page: START
-var port = chrome.runtime.connect();
+	window.addEventListener("message", function(event) {
+		// We only accept messages from ourselves
+		if (event.source != window)
+		{
+			return;
+		}
 
-window.addEventListener("message", function(event) {
-    // We only accept messages from ourselves
-    if (event.source != window)
-	{
-		return;
-	}
+		if (event.data.type && (event.data.type == "FROM_LK_SLT_USAGE_EXTENSION")) {
+			console.log("LK-SLT-Usage: Content script received: " + event.data.text);
+			funMain();
+		}
+	}, false);
+	// Communication with the embedding page: END
+}
+// ----------------------------------------------------------------------------------------------------
+// --------------------------------------- Fun: Extension: END ----------------------------------------
+// ----------------------------------------------------------------------------------------------------
 
-    if (event.data.type && (event.data.type == "FROM_LK_SLT_USAGE_EXTENSION")) {
-        console.log("LK-SLT-Usage: Content script received: " + event.data.text);
-        funMain();
-    }
-}, false);
-// Communication with the embedding page: END
-// Fun: Extension: END
 
 function funMain() {
 	if(window.location.pathname == "/dashboard")
@@ -161,11 +207,11 @@ function funMain() {
 		funCalculation();
 
 		funInsertRemaining2DoughnutChart();
-		
+
 		funInsertOffPeakDoughnutChart();
 		funInsertExtraDoughnutChart();
-		funInsertData2Page();	
-		
+		funInsertData2Page();
+
 		funChangeName();
 		//funDebug(); // For debugging pursues
 	}
@@ -173,14 +219,14 @@ function funMain() {
 
 function funCalculation() {
 	// Get data from the page
-	
-	// Total: Volume // 90.0GB 
+
+	// Total: Volume // 90.0GB
 	totalMonthlylimit = funGetNum('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div/div/div[2]/div/div/div[3]/h6/text()', 10, 2);
 	// Total: Used Volume // 16.7GB
 	totalUsed = funGetNum('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div/div/div[2]/div/div/div[3]/h6/text()', 0, 2);
     // Total: Remaining Volume // 73.3GB
 	totalRemaining = (totalMonthlylimit - totalUsed).toFixed(2);
-	
+
 	// Peak: Volume // 36.0GB
 	peakMonthlylimit = funGetNum('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[2]/div/div[1]/div/div/div/div[1]/div/div/div[3]/h6/text()', 10, 2);
     // Peak: Used Volume // 09.4GB
@@ -276,7 +322,7 @@ function funDebug() {
     console.log("dayOfTheMonth: " + dayOfTheMonth);
     console.log("noOfComingDays: " + noOfComingDays);
 
-    // Given data 
+    // Given data
     console.log("");
     console.log("%cGiven data", "font-weight: bold;");
     console.log("peakDataPerDay: " + peakDataPerDay);
@@ -321,15 +367,15 @@ function funDebug() {
 function funGetNum(xPathValue, startIndex = 0, roundTo = 2) {
     let x = 0;
     try {
-		// Documentation: https://developer.mozilla.org/en-US/docs/Web/API/Document/evaluate 
+		// Documentation: https://developer.mozilla.org/en-US/docs/Web/API/Document/evaluate
 		// Documentation: https://developer.mozilla.org/en-US/docs/Web/API/XPathResult
 		// Documentation: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/default_parameters
 		// Documentation: https://stackoverflow.com/q/11832914 //x = Math.round(x * 100) / 100;
-		
+
 		x = parseFloat(document.evaluate(xPathValue, document, null, XPathResult.STRING_TYPE, null).stringValue.substring(startIndex).replace(/[^\d.]/g, ''));
-		x = isNaN(x) ? 0 : x;		
+		x = isNaN(x) ? 0 : x;
 		x = parseFloat(x.toFixed(roundTo)); // string = int.toFixed(x)
-		
+
     } catch (err) {
         x = 0;
         console.log("LK-SLT-Usage: Error: " + err);
@@ -489,8 +535,8 @@ function funInsertOffPeakDoughnutChart() {
 	circleB.setAttribute("stroke-dashoffset", "1100");
 	circleB.setAttribute("stroke-linecap", "butt");
 	circleB.setAttribute("fill", "none");
-	circleB.style.strokeDashoffset  = (1100/100 * (100 - percentageOffPeakRem)) + "px";
-	circleB.style.transition  = "stroke-dashoffset 1s ease-out 0s";
+	circleB.style.strokeDashoffset = (1100/100 * (100 - percentageOffPeakRem)) + "px";
+	circleB.style.transition = "stroke-dashoffset 1s ease-out 0s";
 	svg.appendChild(circleB);
 
 	//let text = document.createElement("text");
@@ -514,7 +560,7 @@ function funInsertOffPeakDoughnutChart() {
 	ssubdivB_p.style.position = "relative";
 	ssubdivB_p.style.top = "-100px";
 	ssubdivB_p.style.display = "flex";
-	ssubdivB_p.style.justifyContent  = "center";
+	ssubdivB_p.style.justifyContent = "center";
 	ssubdivB_p.style.alignItems = "center";
 	ssubdivB_p.style.color = "rgb(20, 128, 255)";
 	ssubdivB_p.style.fontWeight = "700";
@@ -527,7 +573,7 @@ function funInsertOffPeakDoughnutChart() {
 	ssubdiv_span.style.position = "relative";
 	ssubdiv_span.style.top = "-100px";
 	ssubdiv_span.style.display = "flex";
-	ssubdiv_span.style.justifyContent  = "center";
+	ssubdiv_span.style.justifyContent = "center";
 	ssubdiv_span.style.alignItems = "center";
 	ssubdiv_span.style.color = "rgb(20, 128, 255)";
 	ssubdiv_span.style.fontWeight = "700";
@@ -537,7 +583,7 @@ function funInsertOffPeakDoughnutChart() {
 	ssubdiv_span.append(offPeakRemaining + " GB");
 
 	let ssubdivC = document.createElement("div");
-	ssubdivC.style.marginTop  = "-40px";
+	ssubdivC.style.marginTop = "-40px";
 	ssubdiv.appendChild(ssubdivC);
 
 	let ssubdivC_h6 = document.createElement("h6");
@@ -556,9 +602,12 @@ function funInsertExtraDoughnutChart() {
 	var extraMonthlylimit = funGetNum('//*[@id="root"]/div/div/div[3]/div/div/div/div[3]/div[1]/div/div/div[5]/div/h2[2]/text()', 10, 1);
 
 	var extraRemaining = (extraMonthlylimit - extraUsed) < 0 ? 0 : (extraMonthlylimit - extraUsed);
-	
-	var percentageExtraUsed = ((extraUsed / extraMonthlylimit) * 100).toFixed(0);	
+
+	var percentageExtraUsed = ((extraUsed / extraMonthlylimit) * 100).toFixed(0);
 	percentageExtraUsed = percentageExtraUsed > 100 ? 100 : isNaN(percentageExtraUsed) ? 0 : percentageExtraUsed;
+
+	// if there is no extra GB, then extraMonthlylimit will be 0 and percentageExtraUsed used not be 0. It should be 100 or NA.
+	percentageExtraUsed = (extraMonthlylimit == 0) ? 100 : 0;
 
 	var docFragment = document.createDocumentFragment();
 	// contains all gathered nodes
@@ -617,11 +666,10 @@ function funInsertExtraDoughnutChart() {
 	circleB.setAttribute("stroke-dashoffset", "1100");
 	circleB.setAttribute("stroke-linecap", "butt");
 	circleB.setAttribute("fill", "none");
-	circleB.style.strokeDashoffset  = (1100/100 * (percentageExtraUsed)) + "px";
-	circleB.style.transition  = "stroke-dashoffset 1s ease-out 0s";
+	circleB.style.strokeDashoffset = (1100/100 * (percentageExtraUsed)) + "px";
+	circleB.style.transition = "stroke-dashoffset 1s ease-out 0s";
 	svg.appendChild(circleB);
 
-	//let text = document.createElement("text");
 	let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
 	text.style.font = "700 3.5rem Open Sans";
 	text.setAttribute("fill", "#1480FF");
@@ -632,7 +680,6 @@ function funInsertExtraDoughnutChart() {
 	svg.appendChild(text);
 	text.append(100 - percentageExtraUsed);
 
-	//let tspan = document.createElement("tspan");
 	let tspan = document.createElementNS("http://www.w3.org/2000/svg","tspan");
 	tspan.setAttribute("dx", "10");
 	text.appendChild(tspan);
@@ -642,7 +689,7 @@ function funInsertExtraDoughnutChart() {
 	ssubdivB_p.style.position = "relative";
 	ssubdivB_p.style.top = "-100px";
 	ssubdivB_p.style.display = "flex";
-	ssubdivB_p.style.justifyContent  = "center";
+	ssubdivB_p.style.justifyContent = "center";
 	ssubdivB_p.style.alignItems = "center";
 	ssubdivB_p.style.color = "rgb(20, 128, 255)";
 	ssubdivB_p.style.fontWeight = "700";
@@ -655,23 +702,23 @@ function funInsertExtraDoughnutChart() {
 	ssubdiv_span.style.position = "relative";
 	ssubdiv_span.style.top = "-100px";
 	ssubdiv_span.style.display = "flex";
-	ssubdiv_span.style.justifyContent  = "center";
+	ssubdiv_span.style.justifyContent = "center";
 	ssubdiv_span.style.alignItems = "center";
 	ssubdiv_span.style.color = "rgb(20, 128, 255)";
 	ssubdiv_span.style.fontWeight = "700";
 	ssubdiv_span.style.fontSize = "14px";
 	ssubdiv_span.style.fontFamily = "Open Sans";
 	ssubdiv.appendChild(ssubdiv_span);
-	ssubdiv_span.append(extraRemaining + " GB");
+	ssubdiv_span.append((extraMonthlylimit == 0) ? "NA" : (extraRemaining + " GB"));
 
 	let ssubdivC = document.createElement("div");
-	ssubdivC.style.marginTop  = "-40px";
+	ssubdivC.style.marginTop = "-40px";
 	ssubdiv.appendChild(ssubdivC);
 
 	let ssubdivC_h6 = document.createElement("h6");
 	ssubdivC_h6.className = "sc-dnqmqq jZsdgY";
 	ssubdivC.appendChild(ssubdivC_h6);
-	ssubdivC_h6.append(extraUsed + "GB Used of " + extraMonthlylimit + "GB");
+	ssubdivC_h6.append((extraMonthlylimit == 0) ? "No Extra GB available" : (extraUsed + "GB Used of " + extraMonthlylimit + "GB"));
 
 	// Final code
 	let referenceNode = document.querySelector('#foreignDOMPogressContainer');
@@ -688,7 +735,7 @@ function funInsertData2Page() {
     // INNER HTML
     var docFragment = document.createDocumentFragment();
     // contains all gathered nodes
-	
+
 	let maindiv = document.createElement("div");
     //maindiv.className = "col-md-12";
     docFragment.appendChild(maindiv);
@@ -731,12 +778,12 @@ function funInsertData2Page() {
     //let trhead1_td2 = document.createElement("td");
 	//trhead1_td2.style.padding = "0px 10px 0px 0px";
     //trhead1.appendChild(trhead1_td2);
-    //trhead1_td2.append("   ");
+    //trhead1_td2.append("   ");
     // ------------------------------------------------------
     //let trhead1_td3 = document.createElement("td");
     //trhead1_td3.style.padding = "0px 10px 0px 0px";
     //trhead1.appendChild(trhead1_td3);
-    //trhead1_td3.append("   ");
+    //trhead1_td3.append("   ");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -872,17 +919,17 @@ function funInsertData2Page() {
     let trbr01_td1 = document.createElement("td");
     trbr01_td1.style.padding = "0px 10px 0px 0px";
     trbr01.appendChild(trbr01_td1);
-    trbr01_td1.append("   ");
+    trbr01_td1.append("   ");
     // ------------------------------------------------------
     let trbr01_td2 = document.createElement("td");
 	trbr01_td2.style.padding = "0px 10px 0px 0px";
     trbr01.appendChild(trbr01_td2);
-    trbr01_td2.append("   ");
+    trbr01_td2.append("   ");
     // ------------------------------------------------------
     let trbr01_td3 = document.createElement("td");
     trbr01_td3.style.padding = "0px 10px 0px 0px";
     trbr01.appendChild(trbr01_td3);
-    trbr01_td3.append("   ");
+    trbr01_td3.append("   ");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -903,12 +950,12 @@ function funInsertData2Page() {
     //let trhead2_td2 = document.createElement("td");
 	//trhead2_td2.style.padding = "0px 10px 0px 0px";
     //trhead2.appendChild(trhead2_td2);
-    //trhead2_td2.append("   ");
+    //trhead2_td2.append("   ");
     // ------------------------------------------------------
     //let trhead2_td3 = document.createElement("td");
     //trhead2_td3.style.padding = "0px 10px 0px 0px";
     //trhead2.appendChild(trhead2_td3);
-    //trhead2_td3.append("   ");
+    //trhead2_td3.append("   ");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -1018,17 +1065,17 @@ function funInsertData2Page() {
     let trbr02_td1 = document.createElement("td");
     trbr02_td1.style.padding = "0px 10px 0px 0px";
     trbr02.appendChild(trbr02_td1);
-    trbr02_td1.append("   ");
+    trbr02_td1.append("   ");
     // ------------------------------------------------------
     let trbr02_td2 = document.createElement("td");
 	trbr02_td2.style.padding = "0px 10px 0px 0px";
     trbr02.appendChild(trbr02_td2);
-    trbr02_td2.append("   ");
+    trbr02_td2.append("   ");
     // ------------------------------------------------------
     let trbr02_td3 = document.createElement("td");
     trbr02_td3.style.padding = "0px 10px 0px 0px";
     trbr02.appendChild(trbr02_td3);
-    trbr02_td3.append("   ");
+    trbr02_td3.append("   ");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -1049,12 +1096,12 @@ function funInsertData2Page() {
     //let trhead3_td2 = document.createElement("td");
 	//trhead3_td2.style.padding = "0px 10px 0px 0px";
     //trhead3.appendChild(trhead3_td2);
-    //trhead3_td2.append("   ");
+    //trhead3_td2.append("   ");
     // ------------------------------------------------------
     //let trhead3_td3 = document.createElement("td");
     //trhead3_td3.style.padding = "0px 10px 0px 0px";
     //trhead3.appendChild(trhead3_td3);
-    //trhead3_td3.append("   ");
+    //trhead3_td3.append("   ");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -1164,17 +1211,17 @@ function funInsertData2Page() {
     let trbr03_td1 = document.createElement("td");
     trbr03_td1.style.padding = "0px 10px 0px 0px";
     trbr03.appendChild(trbr03_td1);
-    trbr03_td1.append("   ");
+    trbr03_td1.append("   ");
     // ------------------------------------------------------
     let trbr03_td2 = document.createElement("td");
 	trbr03_td2.style.padding = "0px 10px 0px 0px";
     trbr03.appendChild(trbr03_td2);
-    trbr03_td2.append("   ");
+    trbr03_td2.append("   ");
     // ------------------------------------------------------
     let trbr03_td3 = document.createElement("td");
     trbr03_td3.style.padding = "0px 10px 0px 0px";
     trbr03.appendChild(trbr03_td3);
-    trbr03_td3.append("   ");
+    trbr03_td3.append("   ");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -1195,12 +1242,12 @@ function funInsertData2Page() {
     //let trhead4_td2 = document.createElement("td");
 	//trhead4_td2.style.padding = "0px 10px 0px 0px";
     //trhead4.appendChild(trhead4_td2);
-    //trhead4_td2.append("   ");
+    //trhead4_td2.append("   ");
     // ------------------------------------------------------
     //let trhead4_td3 = document.createElement("td");
     //trhead4_td3.style.padding = "0px 10px 0px 0px";
     //trhead4.appendChild(trhead4_td3);
-    //trhead4_td3.append("   ");
+    //trhead4_td3.append("   ");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -1286,17 +1333,17 @@ function funInsertData2Page() {
     let trbr04_td1 = document.createElement("td");
     trbr04_td1.style.padding = "0px 10px 0px 0px";
     trbr04.appendChild(trbr04_td1);
-    trbr04_td1.append("   ");
+    trbr04_td1.append("   ");
     // ------------------------------------------------------
     let trbr04_td2 = document.createElement("td");
 	trbr04_td2.style.padding = "0px 10px 0px 0px";
     trbr04.appendChild(trbr04_td2);
-    trbr04_td2.append("   ");
+    trbr04_td2.append("   ");
     // ------------------------------------------------------
     let trbr04_td3 = document.createElement("td");
     trbr04_td3.style.padding = "0px 10px 0px 0px";
     trbr04.appendChild(trbr04_td3);
-    trbr04_td3.append("   ");
+    trbr04_td3.append("   ");
     // ------------------------------------------------------
     tbody.append("\n");
 
@@ -1308,7 +1355,7 @@ function funInsertData2Page() {
     let trhead5_td1 = document.createElement("td");
     trhead5_td1.style.padding = "0px 10px 0px 0px";
 	trhead5_td1.colSpan = 3;
-    trhead5.appendChild(trhead5_td1);	
+    trhead5.appendChild(trhead5_td1);
     let trhead5_td1_strong = document.createElement("strong");
     trhead5_td1.appendChild(trhead5_td1_strong);
     trhead5_td1_strong.append("Total Off-Peak Volume: Per day");
@@ -1317,12 +1364,12 @@ function funInsertData2Page() {
     //let trhead5_td2 = document.createElement("td");
 	//trhead5_td2.style.padding = "0px 10px 0px 0px";
     //trhead5.appendChild(trhead5_td2);
-    //trhead5_td2.append("   ");
+    //trhead5_td2.append("   ");
     // ------------------------------------------------------
     //let trhead5_td3 = document.createElement("td");
     //trhead5_td3.style.padding = "0px 10px 0px 0px";
     //trhead5.appendChild(trhead5_td3);
-    //trhead5_td3.append("   ");
+    //trhead5_td3.append("   ");
     // ------------------------------------------------------
     tbody.append("\n");
 

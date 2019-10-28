@@ -1,6 +1,6 @@
 {
 	"name": "LK SLT Usage",
-	"version": "10.4",
+	"version": "10.5",
 	"manifest_version": 2,
 	
 	"description": "Sri Lanka Telecom - Data Usage",
@@ -22,14 +22,13 @@
 	},	
 	
 	"permissions": [
-		"webRequest",
-		"*://*.internetvas.slt.lk/*"
+		"*://*.slt.lk/*",
+		"*://*.w3.org/*"
 	],
 	
 	"content_scripts": [{
 		"matches": ["*://*.internetvas.slt.lk/*"],
 		"js": ["content-script.js"],
-		"run_at": "document_start"
-		
+		"run_at": "document_start"		
 	}]
 }
