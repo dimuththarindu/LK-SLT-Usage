@@ -3,8 +3,7 @@ Sri Lanka Telecom - Data Usage
 
 If you're a Sri Lankan <a href="https://www.slt.lk/">SLT</a> Broadband user, you can use this extension to get more data usage information. After installation, you can log in to the <a href="https://www.internetvas.slt.lk/">portal</a> as usual. Once you do that, you will see additional information.
 
-**Firefox Extension:** https://addons.mozilla.org/en-US/firefox/addon/lk-slt-usage-unofficial/  
-**Opera Extension:** https://addons.opera.com/en/extensions/details/lk-slt-usage-unofficial/   
+**Firefox Extension:** https://addons.mozilla.org/en-US/firefox/addon/lk-slt-usage-unofficial/     
 
 Extension [ZIP file]: https://github.com/dimuththarindu/LK-SLT-Usage/raw/master/Extension/Extension.zip   
 Zip file can be used to manually install this extension on Chromium browsers such as Google Chrome.
