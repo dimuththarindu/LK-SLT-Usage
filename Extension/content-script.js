@@ -1,17 +1,18 @@
 // Name         LK-SLT-Usage
-// Version      12.0
+// Version      12.1
 // Author       DT
 // Description  Sri Lanka Telecom - Data Usage
 // Source       https://github.com/dimuththarindu/LK-SLT-Usage
 // SupportURL   https://github.com/dimuththarindu/LK-SLT-Usage/issues
 // License      GNU Lesser General Public License v3.0
-// history      10.0.0 Added the mode selection (browser vs userscript)
-// history      9.5.0 Add Remaining vol to Doughnut Charts
-// history      9.0.0 Updated the script
-// history      8.0.0 Updated the script according to SLT new web page
-// history      7.0.0 Fix minor errors in JS 
-// history      6.0.0 Update the warning sign color
-// history      5.8.0 Change the image and update URL paths
+// History      12.0.0 Added bonus data to the add. data
+// History      10.0.0 Added the mode selection (browser vs userscript)
+// History      9.5.0 Add Remaining vol to Doughnut Charts
+// History      9.0.0 Updated the script
+// History      8.0.0 Updated the script according to SLT new web page
+// History      7.0.0 Fix minor errors in JS 
+// History      6.0.0 Update the warning sign color
+// History      5.8.0 Change the image and update URL paths
 
 
 // Total Volume
@@ -68,6 +69,7 @@ var percentageOffPeakUsed = 0;
 
 console.log('LK-SLT-Usage: Process has been started');
 
+//region
 // ----------------------------------------------------------------------------------------------------
 // ----------------------------------- Fun: Select the Mode: START ------------------------------------
 // ----------------------------------------------------------------------------------------------------
@@ -198,7 +200,7 @@ function funReceiveMessages() {
 // ----------------------------------------------------------------------------------------------------
 // --------------------------------------- Fun: Extension: END ----------------------------------------
 // ----------------------------------------------------------------------------------------------------
-
+//endregion
 
 function funMain() {
 	if(window.location.pathname == "/dashboard")
@@ -600,14 +602,25 @@ function funInsertOffPeakDoughnutChart() {
 function funInsertExtraDoughnutChart() {
 	var extraUsed = funGetNum('//*[@id="root"]/div/div/div[3]/div/div/div/div[3]/div[1]/div/div/div[5]/div/h2[2]/text()', 0, 1);
 	var extraMonthlylimit = funGetNum('//*[@id="root"]/div/div/div[3]/div/div/div/div[3]/div[1]/div/div/div[5]/div/h2[2]/text()', 10, 1);
+	
+	var bonusUsed = funGetNum('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[1]/div/div/div[2]/div/h2[2]/text()', 0, 1);
+	var bonusMonthlylimit = funGetNum('/html/body/div/div/div/div[3]/div/div/div/div[3]/div[1]/div/div/div[2]/div/h2[2]/text()', 10, 1);
+	
+	var allAddDataUsed = extraUsed + bonusUsed;
+	var allAddDataMonthlylimit = extraMonthlylimit + bonusMonthlylimit;
 
-	var extraRemaining = (extraMonthlylimit - extraUsed) < 0 ? 0 : (extraMonthlylimit - extraUsed);
+	var extraRemaining = (allAddDataMonthlylimit - allAddDataUsed) < 0 ? 0 : (allAddDataMonthlylimit - allAddDataUsed);
 
-	var percentageExtraUsed = ((extraUsed / extraMonthlylimit) * 100).toFixed(0);
+	var percentageExtraUsed = ((allAddDataUsed / allAddDataMonthlylimit) * 100).toFixed(0);
 	percentageExtraUsed = percentageExtraUsed > 100 ? 100 : isNaN(percentageExtraUsed) ? 0 : percentageExtraUsed;
 
 	// if there is no extra GB, then extraMonthlylimit will be 0 and percentageExtraUsed used not be 0. It should be 100 or NA.
-	percentageExtraUsed = (extraMonthlylimit == 0) ? 100 : 0;
+	percentageExtraUsed = (allAddDataMonthlylimit == 0) ? 100 : percentageExtraUsed;
+	
+	// Round up
+	allAddDataUsed = parseFloat(allAddDataUsed.toFixed(2));
+	allAddDataMonthlylimit = parseFloat(allAddDataMonthlylimit.toFixed(2));
+	extraRemaining = parseFloat(extraRemaining.toFixed(2));
 
 	var docFragment = document.createDocumentFragment();
 	// contains all gathered nodes
@@ -629,7 +642,7 @@ function funInsertExtraDoughnutChart() {
 	let h6 = document.createElement("h6");
 	h6.className = "sc-dnqmqq hZAKPK";
 	ssubdiv.appendChild(h6);
-	h6.append("Extra GB Volume");
+	h6.append("Additional Data Volume");
 	ssubdiv.append("\n");
 
 	let ssubdivA = document.createElement("div");
@@ -709,7 +722,7 @@ function funInsertExtraDoughnutChart() {
 	ssubdiv_span.style.fontSize = "14px";
 	ssubdiv_span.style.fontFamily = "Open Sans";
 	ssubdiv.appendChild(ssubdiv_span);
-	ssubdiv_span.append((extraMonthlylimit == 0) ? "NA" : (extraRemaining + " GB"));
+	ssubdiv_span.append((allAddDataMonthlylimit == 0) ? "NA" : (extraRemaining + " GB"));
 
 	let ssubdivC = document.createElement("div");
 	ssubdivC.style.marginTop = "-40px";
@@ -717,8 +730,26 @@ function funInsertExtraDoughnutChart() {
 
 	let ssubdivC_h6 = document.createElement("h6");
 	ssubdivC_h6.className = "sc-dnqmqq jZsdgY";
+	//var ssubdivC_h6_textnode_fl = document.createTextNode((allAddDataMonthlylimit == 0) ? "No Additional Data available" : (allAddDataUsed + "GB Used of " + allAddDataMonthlylimit + "GB"));
+	//var ssubdivC_h6_textnode_ll = document.createTextNode("Bonus Data + Extra GB");
+	//var ssubdivC_h6_linebreak = document.createElement("br");
+	//ssubdivC_h6.appendChild(ssubdivC_h6_textnode_fl);
+	//ssubdivC_h6.appendChild(ssubdivC_h6_linebreak);
+	//ssubdivC_h6.appendChild(ssubdivC_h6_textnode_ll);
 	ssubdivC.appendChild(ssubdivC_h6);
-	ssubdivC_h6.append((extraMonthlylimit == 0) ? "No Extra GB available" : (extraUsed + "GB Used of " + extraMonthlylimit + "GB"));
+	ssubdivC_h6.append((allAddDataMonthlylimit == 0) ? "No Additional Data available" : (allAddDataUsed + "GB Used of " + allAddDataMonthlylimit + "GB"));
+
+	let ssubdivC_p = document.createElement("p");
+	ssubdivC_p.style.fontSize = "12px";
+	ssubdivC_p.style.margin = "0px";
+	ssubdivC_p.style.fontWeight = "600";
+	ssubdivC_p.style.color = "rgb(95, 99, 104)";
+	ssubdivC_p.style.opacity = "0.4"; 
+	ssubdivC.appendChild(ssubdivC_p);
+	
+	let ssubdivC_p_em = document.createElement("em");	
+	ssubdivC_p.appendChild(ssubdivC_p_em);
+	ssubdivC_p_em.append("Bonus Data + Extra GB");
 
 	// Final code
 	let referenceNode = document.querySelector('#foreignDOMPogressContainer');
