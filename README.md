@@ -19,6 +19,6 @@ In addition, this extension does not store or send any data. All the processes a
 
 <hr>  
 
-<img src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Screenshots/Screenshot_01.png" />
+<img src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Screenshots/Screenshot_01-Slt-Monthly-Data-Usage.png" />
 
-<img src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Screenshots/Screenshot_02.png" />  
+<img src="https://raw.githubusercontent.com/dimuththarindu/LK-SLT-Usage/master/Images/Screenshots/Screenshot_02-Slt-Monthly-Data-Usage-Statistics.png" />  
